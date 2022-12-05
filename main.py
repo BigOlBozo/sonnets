@@ -16,6 +16,12 @@ syn = []
 # write = txts
 # populate = dicts
 
+
+ 
+def find_all_idx(main,sub):
+  res = [i for i in range(len(main)) if main.startswith(sub, i)]
+  return res
+
 def unicodetoascii(text):
 
     TEXT = (text.
@@ -50,7 +56,6 @@ def unicodetoascii(text):
                  )
     return TEXT
 
-
 def find_indices(list_to_check, item_to_find):
     indices = []
     for idx, value in enumerate(list_to_check):
@@ -59,7 +64,7 @@ def find_indices(list_to_check, item_to_find):
     return indices
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-print(find_indices(,'s'))
+
 def get_synopsis(extnum,extid):
   #print(base+str(extnum))
   r = requests.get(f'{base+str(extnum)}')
@@ -113,21 +118,23 @@ def write_sonnets(length):
 def clean_sonnets(extid):
   with open(f'sonnets/{extid}.txt') as f:
     for lines in f:
-      opn = find_indices(str(lines), '<')
+      opn = find_all_idx(str(lines), 'br')
   title = extid.lstrip('0')
+  
+  with open(f'sonnets/{extid}.txt','r') as f:
+    for line in f:
+      start = find_all_idx(line,'</a>')
+      end = find_all_idx(line,'<br/>') #first one is wrong, start at 1
+      for x in range(len(start)):
+        print(line[(start[x]+4):end[x+1]])  
+  print()
+  
   return opn
-'''with open('sonnets/001.txt','r') as f:
-  for line in f:
-    print(line[70:70+(int(extid))])  
-print()
-with open('sonnets/002.txt','r') as f:
-  for line in f:
-    print(line[70:72])  
 
-'''
 write_ext()
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
-for id in ids:
-  clean_sonnets(id)
+clean_sonnets('001')
+'''for id in ids:
+  clean_sonnets(id)'''
