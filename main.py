@@ -105,7 +105,7 @@ def write_txt_and_synopsi(extnum):
     if extnum[-x::].isdigit() == True:
       extid = (extnum[-x::])
   extid = extid.rjust(3,'0')
-  
+  print(extid)
   for link in soup.find_all('div',class_="div1", id=f'Son-{extid}'):
     with open(f'sonnets/{extid}.txt', 'w',encoding='utf-8') as f:
       print(extid)
@@ -135,6 +135,33 @@ write_ext()
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
-clean_sonnets('001')
+
+'''def hyup(id):
+  with open(f'sonnets/{id}.txt') as f:
+    for line in f:
+      start = find_all_idx(str(line), '<span')
+  return len(start)
+for id in ids:
+  print(hyup(id))'''
+  
+#\xc3\xa8d
+def clean_brid(extid):
+  with open(f'sonnets/{extid}.txt') as f:
+    for line in f:
+      newline = line
+  for x in range(len(find_all_idx(newline, '<span'))):
+    stt = find_all_idx(newline, '<span')
+    end = find_all_idx(newline, '</span>')
+    print(stt[0],end[0])
+    try: 
+      newline = newline.replace(line[stt[x]:end[x]+7],'')
+    except:
+      pass
+    with open(f'sonnets/{extid}.txt', 'w') as h:
+      h.write(newline)
+  return extid, len(find_all_idx(line, '<span'))
+for id in ids:
+  print(clean_brid(id))
+#clean_sonnets('001')
 '''for id in ids:
   clean_sonnets(id)'''
