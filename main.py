@@ -1,12 +1,9 @@
 import requests
 from bs4 import BeautifulSoup as BS
 import os
-string = 'pllasdasdasd'
 os.system('cls')
 '''import pronouncing
-(pronouncing.rhymes("climbing")'''
-a = []
-asdasd = []
+print(pronouncing.rhymes("climbing"))'''
 line = []
 extensions = []
 links = []
@@ -15,7 +12,7 @@ syn = []
 # fill = lists
 # write = txts
 # populate = dicts
-
+errors = []
 
  
 def find_all_idx(main,sub):
@@ -64,7 +61,6 @@ def find_indices(list_to_check, item_to_find):
     return indices
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-
 def get_synopsis(extnum,extid):
   #print(base+str(extnum))
   r = requests.get(f'{base+str(extnum)}')
@@ -105,46 +101,20 @@ def write_txt_and_synopsi(extnum):
     if extnum[-x::].isdigit() == True:
       extid = (extnum[-x::])
   extid = extid.rjust(3,'0')
-  print(extid)
   for link in soup.find_all('div',class_="div1", id=f'Son-{extid}'):
     with open(f'sonnets/{extid}.txt', 'w',encoding='utf-8') as f:
-      print(extid)
-      f.write(unicodetoascii(str(str(link).encode('utf-8'))))
+      print('---',extid)
+      f.write(unicodetoascii(str(str(link))))
     links.append(link)
   #get_synopsis(extnum,extid) 
 def write_sonnets(length):
   for x in range(length):
     write_txt_and_synopsi(extensions[x])
-def clean_sonnets(extid):
-  with open(f'sonnets/{extid}.txt') as f:
-    for lines in f:
-      opn = find_all_idx(str(lines), 'br')
-  title = extid.lstrip('0')
-  
-  with open(f'sonnets/{extid}.txt','r') as f:
-    for line in f:
-      start = find_all_idx(line,'</a>')
-      end = find_all_idx(line,'<br/>') #first one is wrong, start at 1
-      for x in range(len(start)):
-        print(line[(start[x]+4):end[x+1]])  
-  print()
-  
-  return opn
-
 write_ext()
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
 
-'''def hyup(id):
-  with open(f'sonnets/{id}.txt') as f:
-    for line in f:
-      start = find_all_idx(str(line), '<span')
-  return len(start)
-for id in ids:
-  print(hyup(id))'''
-  
-#\xc3\xa8d
 def clean_brid(extid):
   with open(f'sonnets/{extid}.txt') as f:
     for line in f:
@@ -152,7 +122,7 @@ def clean_brid(extid):
   for x in range(len(find_all_idx(newline, '<span'))):
     stt = find_all_idx(newline, '<span')
     end = find_all_idx(newline, '</span>')
-    print(stt[0],end[0])
+    #print(stt[0],end[0])
     try: 
       newline = newline.replace(line[stt[x]:end[x]+7],'')
     except:
@@ -160,8 +130,46 @@ def clean_brid(extid):
     with open(f'sonnets/{extid}.txt', 'w') as h:
       h.write(newline)
   return extid, len(find_all_idx(line, '<span'))
+
+
+
+#\xc3\xa8d
+def clean(extid):  
+  with open(f'sonnets/{extid}.txt') as f:
+    for line in f:
+      line = line
+  line = line.replace('\\n',' ')
+  line = line.strip('\'b')
+  ope = line.index('<')
+  clse = line.index('>')
+  to_remove = line[ope:clse+1]
+  lne = line.replace(to_remove,' ')
+  lne = lne.replace('   ','#')
+  with open(f'sonnets/{extid}.txt','w') as f:
+      f.write(lne)
+def clean_up(extid):
+  for x in range(100):
+    try:
+      clean(extid)
+    except:
+      print(extid, 'clean')
+      break
+  
+def reset_texts():
+  for id in ids:
+    with open(f'bakupsonnets/{id}.txt') as f:
+      for line in f:
+        with open(f'sonnets/{id}.txt', 'w') as h:
+          h.write(line)
+
+#reset_texts()
+reset_texts()
 for id in ids:
   print(clean_brid(id))
-#clean_sonnets('001')
 '''for id in ids:
-  clean_sonnets(id)'''
+  clean_up(id)
+  with open(f'sonnets/{id}.txt') as f:
+    for line in f:
+      if '\\' in line:
+        errors.append(line)'''
+print(len(errors))
