@@ -27,7 +27,9 @@ def unicodetoascii(text):
     TEXT = (text.
     		replace('\\xe2\\x80\\x99', "'").
             replace('\\xc3\\xa9', 'e').
-            replace('\\xc3\\xa8','').
+            replace('\\xc3\\xa8','e').
+            replace('⌜','@').
+            replace('⌝','$').
             replace('\\xc2\\xa0', '').
             replace('\\xe2\\x8c\\x9c','').
             replace('\\xe2\\x8c\\x9d','').
@@ -149,11 +151,15 @@ def clean(extid):
   
   line = line.replace('\\n',' ')
   line = line.strip('\'b')
+  line = line.replace('<br/>','#')
   ope = line.index('<')
   clse = line.index('>')
   to_remove = line[ope:clse+1]
-  lne = line.replace(to_remove,' ')
-  lne = lne.replace('   ','#')
+  if 'lineNbr' in to_remove:
+    lne = line.replace(to_remove,'')
+  else:
+    lne = line.replace(to_remove,'')
+  #lne = lne.replace('   ','#')
   with open(f'sonnets/{extid}.txt','w') as f:
       f.write(lne)
 def clean_up(extid):
@@ -161,13 +167,14 @@ def clean_up(extid):
     try:
       clean(extid)
     except:
-      os.system('clear')
-      print(f'{round(100*(int(extid))/154)}% clean')
+      #os.system('clear')
+      #print(extid) #f'{round(100*(int(extid))/154)}% clean'
       break
 def cleaning():
   for id in ids:
     clean_up(id)
-    with open(f'sonnets/{id}.txt') as f:
+    print(id)
+    with open(f'sonnets/{id}.txt', encoding="utf-8") as f:
       for line in f:
         if '\\' in line:
           print(id)
@@ -175,32 +182,37 @@ def cleaning():
   print(f'{int(100*(154-int(len(errors)))/154)}% clean')
 def nonums(extid):
   newline = ''
-  with open(f'sonnets/{extid}.txt','r') as f:
+  with open(f'sonnets/{extid}.txt','r',encoding='utf-8') as f:
     for line in f:
       for char in line:
         if char.isnumeric() == False:
           newline += char
-  newline = newline.replace('#','',2)
+  #newline = newline.replace('#','',2)
   with open(f'sonnets/{extid}.txt','w') as h:
-    h.write(newline.strip())
-  os.system('clear')
-  print((f'{round(100*(int(extid))/154)}% done'))
+    h.write(newline.strip().strip('#'))
+  #os.system('clear')
+  #print('done',extid) #(f'{round(100*(int(extid))/154)}% done')
 def nonumsing():
   for id in ids:
     nonums(id)
 def fill_lines(extid):
   with open(f'sonnets/{extid}.txt','r') as f:
+    print(extid)
     for line in f:
-      for x in range(14):
-        if x < 12:
-          lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+      for x in range(13):
+        '''print(f'l{x+1}')
+        print((line.split('#')[x]).strip())'''
+        lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+        '''if x < 11:
+          
         else:
-          lines[f'l{x+1}'].append('    %s' % (line.split('#')[x]).strip())
+          lines[f'l{x+1}'].append((line.split('#')[x]).strip())'''
 def filling_lines():
   for id in ids:
     fill_lines(id)
 def print_sonnet(extid):
   print(f'Poem {extid}:')  
+  print(len(lines['l14']))
   for x in range(1,15):
     print(lines[f'l{x}'][int(extid)-1]) #f'{x}:',
   
@@ -208,15 +220,21 @@ def print_sonnet(extid):
 
 
 #091
-
+# 126 is 12, added 2 hashtags at end
 
 #write_ext()
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
-reset_texts()
+'''reset_texts()
 cleaning()
 nonumsing()
+'''
 filling_lines()
+for id in ids:
+  with open(f'sonnets/{id}.txt') as f:
+    for line in f:
+      if len(find_all_idx(line,'#')) != 13:
+        print(id, len(find_all_idx(line,'#')))
 for id in ids:
   print_sonnet(id)
