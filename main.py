@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as BS
 import os
-os.system('cls')
 '''import pronouncing
 print(pronouncing.rhymes("climbing"))'''
 
@@ -17,7 +16,10 @@ lines = {'l1':[],'l2':[],'l3':[],'l4':[],'l5':[],'l6':[],'l7':[],'l8':[],'l9':[]
 # populate = dicts
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
- 
+def clear_lines():
+  for x in range(1,16):
+    with open(f'lines/{x}.txt','w'):
+      pass
 def find_all_idx(main,sub):
   res = [i for i in range(len(main)) if main.startswith(sub, i)]
   return res
@@ -143,8 +145,8 @@ def reset_texts():
         with open(f'sonnets/{id}.txt', 'w') as h:
           h.write(line)
 
-def clean(extid):  
-  with open(f'sonnets/{extid}.txt') as f:
+def clean(folder, extid):  
+  with open(f'{folder}/{extid}.txt') as f:
     for line in f:
       line = line
   line = unicodetoascii(line)
@@ -160,12 +162,12 @@ def clean(extid):
   else:
     lne = line.replace(to_remove,'')
   #lne = lne.replace('   ','#')
-  with open(f'sonnets/{extid}.txt','w') as f:
+  with open(f'{folder}/{extid}.txt','w') as f:
       f.write(lne)
 def clean_up(extid):
   for x in range(100):
     try:
-      clean(extid)
+      clean('sonnets',extid)
     except:
       #os.system('clear')
       #print(extid) #f'{round(100*(int(extid))/154)}% clean'
@@ -179,7 +181,9 @@ def cleaning():
         if '\\' in line:
           print(id)
           errors.append(line)
-  print(f'{int(100*(154-int(len(errors)))/154)}% clean')
+  #print(f'{int(100*(154-int(len(errors)))/154)}% clean')
+  nonumsing()
+  print('No Nums')
 def nonums(extid):
   newline = ''
   with open(f'sonnets/{extid}.txt','r',encoding='utf-8') as f:
@@ -187,11 +191,8 @@ def nonums(extid):
       for char in line:
         if char.isnumeric() == False:
           newline += char
-  #newline = newline.replace('#','',2)
   with open(f'sonnets/{extid}.txt','w') as h:
     h.write(newline.strip().strip('#'))
-  #os.system('clear')
-  #print('done',extid) #(f'{round(100*(int(extid))/154)}% done')
 def nonumsing():
   for id in ids:
     nonums(id)
@@ -202,44 +203,111 @@ def fill_lines(extid):
       for x in range(14):
         try:
           lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+          with open(f'lines/{x+1}.txt','a') as f:
+            f.write((line.split('#')[x]).strip())
+            f.write('\n')
         except:
           lines[f'l{x+1}'].append('')
+          with open(f'lines/{x+1}.txt','a') as f:
+              f.write('')
+              f.write('\n')
       if extid != '099':
         lines['l15'].append('')
       else:
         lines['l15'].append((line.split('#')[14]).strip())
-def filling_lines():
+      with open(f'lines/15.txt','a') as f:
+        try:
+          f.write((line.split('#')[14]).strip())
+        except:
+          f.write('')
+        f.write('\n')
+def filling_and_writing_lines():
   for id in ids:
     fill_lines(id)
 def print_sonnet(extid):
-  print(f'Poem {extid}:')  
+  print(f'Sonnet {extid}:')  
   #print(len(lines['l14']))
   for x in range(1,16):
     if len(lines[f'l{x}'][int(extid)-1]) != 0:
-      print(x,'---',(lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+      if x < 13:
+        print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+      else: 
+        print('   ',(lines[f'l{x}'][int(extid)-1]))
+  return True
+
+def write_sonnets():
+  reset_texts()
+  print('Texts Reset')
+  cleaning()
+  print('Texts Clean')
+  
+def write_lines():
+  clear_lines()
+  print('Lines Clear')
+  filling_and_writing_lines()
+  print('Lines Written')
+def fill_ext_ids():
+  fill_ext()
+  fill_ids()
+
+
+#bad V copy from clean all 3 fx
+
+
+
+
+
+#################################################3
+def clean_syn(folder, extid):  
+  with open(f'{folder}/{extid}.txt') as f:
+    for line in f:
+      line = line
+
+  line = unicodetoascii(line)
+  line = line.replace('\\n',' ')
+  line = line.strip('\'b')
+  line = line.replace('<br/>','#')
+  
+  ope = line.index('<')
+  clse = line.index('>')
+  
+  to_remove = line[ope:clse+1]
+  lne = line.replace(to_remove,'')
+  
+  with open(f'{folder}/{extid}.txt','w') as f:
+      f.write(lne)
+
+def clean_up_syn(extid):
+  for x in range(100):
+    try:
+      clean_syn('sonnets',extid)
+    except:
+      #os.system('clear')
+      #print(extid) #f'{round(100*(int(extid))/154)}% clean'
+      break
+def cleaning_syn():
+  for id in ids:
+    clean_up_syn(id)
+    #print(id)
+    with open(f'synopsi/{id}.txt', encoding="utf-8") as f:
+      for line in f:
+        if '<' in line:
+          print(id)
+          errors.append(line)
+  #print(f'{int(100*(154-int(len(errors)))/154)}% clean')
+  nonumsing()
+  print('No Nums')
+
+
+####################################
+
   
 
 
 
-#091
-# 126 is 12, added 2 hashtags at end
-
 #write_ext()
-fill_ext()
-#write_sonnets(len(extensions))
-fill_ids()
-reset_texts()
-cleaning()
-nonumsing()
-
-filling_lines()
-for id in ids:
-  with open(f'sonnets/{id}.txt') as f:
-    for line in f:
-      if len(find_all_idx(line,'#')) != 13:
-        print(id, len(find_all_idx(line,'#')))
-print_sonnet('154')
-#15 lines in 99, add l15 dict and add ' ' for everything else, if len l15 = 1, break
-'''
-for id in ids:
-  print_sonnet(id)'''
+fill_ext_ids()
+#write_sonnets()
+write_lines()
+print_sonnet('128')
+clean_synopsi()
