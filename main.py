@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as BS
 import os
+os.system('cls')
 '''import pronouncing
 print(pronouncing.rhymes("climbing"))'''
 
@@ -310,4 +311,4 @@ fill_ext_ids()
 #write_sonnets()
 write_lines()
 print_sonnet('128')
-clean_synopsi()
+clean_syn()
