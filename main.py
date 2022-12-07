@@ -11,7 +11,7 @@ links = []
 ids = []
 syn = []
 errors = []
-lines = {'l1':[],'l2':[],'l3':[],'l4':[],'l5':[],'l6':[],'l7':[],'l8':[],'l9':[],'l10':[],'l11':[],'l12':[],'l13':[],'l14':[]}
+lines = {'l1':[],'l2':[],'l3':[],'l4':[],'l5':[],'l6':[],'l7':[],'l8':[],'l9':[],'l10':[],'l11':[],'l12':[],'l13':[],'l14':[],'l15':[]}
 # fill = lists
 # write = txts
 # populate = dicts
@@ -173,7 +173,7 @@ def clean_up(extid):
 def cleaning():
   for id in ids:
     clean_up(id)
-    print(id)
+    #print(id)
     with open(f'sonnets/{id}.txt', encoding="utf-8") as f:
       for line in f:
         if '\\' in line:
@@ -197,24 +197,26 @@ def nonumsing():
     nonums(id)
 def fill_lines(extid):
   with open(f'sonnets/{extid}.txt','r') as f:
-    print(extid)
+    #print(extid)
     for line in f:
-      for x in range(13):
-        '''print(f'l{x+1}')
-        print((line.split('#')[x]).strip())'''
-        lines[f'l{x+1}'].append((line.split('#')[x]).strip())
-        '''if x < 11:
-          
-        else:
-          lines[f'l{x+1}'].append((line.split('#')[x]).strip())'''
+      for x in range(14):
+        try:
+          lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+        except:
+          lines[f'l{x+1}'].append('')
+      if extid != '099':
+        lines['l15'].append('')
+      else:
+        lines['l15'].append((line.split('#')[14]).strip())
 def filling_lines():
   for id in ids:
     fill_lines(id)
 def print_sonnet(extid):
   print(f'Poem {extid}:')  
-  print(len(lines['l14']))
-  for x in range(1,15):
-    print(lines[f'l{x}'][int(extid)-1]) #f'{x}:',
+  #print(len(lines['l14']))
+  for x in range(1,16):
+    if len(lines[f'l{x}'][int(extid)-1]) != 0:
+      print(x,'---',(lines[f'l{x}'][int(extid)-1])) #f'{x}:',
   
 
 
@@ -226,15 +228,18 @@ def print_sonnet(extid):
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
-'''reset_texts()
+reset_texts()
 cleaning()
 nonumsing()
-'''
+
 filling_lines()
 for id in ids:
   with open(f'sonnets/{id}.txt') as f:
     for line in f:
       if len(find_all_idx(line,'#')) != 13:
         print(id, len(find_all_idx(line,'#')))
+print_sonnet('154')
+#15 lines in 99, add l15 dict and add ' ' for everything else, if len l15 = 1, break
+'''
 for id in ids:
-  print_sonnet(id)
+  print_sonnet(id)'''
