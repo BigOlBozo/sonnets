@@ -300,9 +300,7 @@ def cleaning_syn():
   print('No Nums')
 ####################################
 
-  
-
-
+# V actually running V
 
 #write_ext()
 fill_ext_ids()
