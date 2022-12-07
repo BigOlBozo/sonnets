@@ -4,16 +4,34 @@ import os
 os.system('cls')
 '''import pronouncing
 print(pronouncing.rhymes("climbing"))'''
+
 line = []
 extensions = []
 links = []
 ids = []
 syn = []
+errors = []
+lines = {'l1':'ads',
+        'l2':'',
+        'l3':'',
+        'l4':'',
+        'l5':'',
+        'l6':'',
+        'l7':'',
+        'l8':'',
+        'l9':'',
+        'l10':'',
+        'l11':'',
+        'l12':'',
+        'l13':'',
+        'l14':''
+        }
+print(lines['l1'])
 # fill = lists
 # write = txts
 # populate = dicts
-errors = []
 
+base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
  
 def find_all_idx(main,sub):
   res = [i for i in range(len(main)) if main.startswith(sub, i)]
@@ -24,6 +42,10 @@ def unicodetoascii(text):
     TEXT = (text.
     		replace('\\xe2\\x80\\x99', "'").
             replace('\\xc3\\xa9', 'e').
+            replace('\\xc3\\xa8','').
+            replace('\\xc2\\xa0', '').
+            replace('\\xe2\\x8c\\x9c','').
+            replace('\\xe2\\x8c\\x9d','').
             replace('\\xe2\\x80\\x90', '-').
             replace('\\xe2\\x80\\x91', '-').
             replace('\\xe2\\x80\\x92', '-').
@@ -37,7 +59,7 @@ def unicodetoascii(text):
             replace('\\xe2\\x80\\x9d', '"').
             replace('\\xe2\\x80\\x9e', '"').
             replace('\\xe2\\x80\\x9f', '"').
-            replace('\\xe2\\x80\\xa6', '...').#
+            replace('\\xe2\\x80\\xa6', '...').
             replace('\\xe2\\x80\\xb2', "'").
             replace('\\xe2\\x80\\xb3', "'").
             replace('\\xe2\\x80\\xb4', "'").
@@ -60,7 +82,7 @@ def find_indices(list_to_check, item_to_find):
             indices.append(idx)
     return indices
 
-base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
+
 def get_synopsis(extnum,extid):
   #print(base+str(extnum))
   r = requests.get(f'{base+str(extnum)}')
@@ -110,10 +132,7 @@ def write_txt_and_synopsi(extnum):
 def write_sonnets(length):
   for x in range(length):
     write_txt_and_synopsi(extensions[x])
-write_ext()
-fill_ext()
-#write_sonnets(len(extensions))
-fill_ids()
+
 
 def clean_brid(extid):
   with open(f'sonnets/{extid}.txt') as f:
@@ -138,6 +157,8 @@ def clean(extid):
   with open(f'sonnets/{extid}.txt') as f:
     for line in f:
       line = line
+  line = unicodetoascii(line)
+  
   line = line.replace('\\n',' ')
   line = line.strip('\'b')
   ope = line.index('<')
@@ -152,7 +173,8 @@ def clean_up(extid):
     try:
       clean(extid)
     except:
-      print(extid, 'clean')
+      os.system('clear')
+      print(f'{round(100*(int(extid))/154)}% clean')
       break
   
 def reset_texts():
@@ -162,14 +184,45 @@ def reset_texts():
         with open(f'sonnets/{id}.txt', 'w') as h:
           h.write(line)
 
-#reset_texts()
-reset_texts()
-for id in ids:
-  print(clean_brid(id))
-'''for id in ids:
-  clean_up(id)
-  with open(f'sonnets/{id}.txt') as f:
+
+def cleaning():
+  for id in ids:
+    clean_up(id)
+    with open(f'sonnets/{id}.txt') as f:
+      for line in f:
+        if '\\' in line:
+          print(id)
+          errors.append(line)
+  print(f'{int(100*(154-int(len(errors)))/154)}% clean')
+def nonums(extid):
+  newline = ''
+  with open(f'sonnets/{extid}.txt','r') as f:
     for line in f:
-      if '\\' in line:
-        errors.append(line)'''
-print(len(errors))
+      for char in line:
+        if char.isnumeric() == False:
+          newline += char
+  newline = newline.replace('#','',2)
+  with open(f'sonnets/{extid}.txt','w') as h:
+    h.write(newline.strip())
+  os.system('clear')
+  print((f'{round(100*(int(extid))/154)}% done'))
+def nonumsing():
+  for id in ids:
+    nonums(id)
+
+def fill_lines():
+  pass
+
+
+
+
+
+
+#write_ext()
+fill_ext()
+#write_sonnets(len(extensions))
+fill_ids()
+'''reset_texts()
+cleaning()
+nonumsing()'''
+print('done')
