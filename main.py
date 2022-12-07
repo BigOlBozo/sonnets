@@ -11,22 +11,7 @@ links = []
 ids = []
 syn = []
 errors = []
-lines = {'l1':'ads',
-        'l2':'',
-        'l3':'',
-        'l4':'',
-        'l5':'',
-        'l6':'',
-        'l7':'',
-        'l8':'',
-        'l9':'',
-        'l10':'',
-        'l11':'',
-        'l12':'',
-        'l13':'',
-        'l14':''
-        }
-print(lines['l1'])
+lines = {'l1':[],'l2':[],'l3':[],'l4':[],'l5':[],'l6':[],'l7':[],'l8':[],'l9':[],'l10':[],'l11':[],'l12':[],'l13':[],'l14':[]}
 # fill = lists
 # write = txts
 # populate = dicts
@@ -149,10 +134,13 @@ def clean_brid(extid):
     with open(f'sonnets/{extid}.txt', 'w') as h:
       h.write(newline)
   return extid, len(find_all_idx(line, '<span'))
+def reset_texts():
+  for id in ids:
+    with open(f'bakupsonnets/{id}.txt') as f:
+      for line in f:
+        with open(f'sonnets/{id}.txt', 'w') as h:
+          h.write(line)
 
-
-
-#\xc3\xa8d
 def clean(extid):  
   with open(f'sonnets/{extid}.txt') as f:
     for line in f:
@@ -176,15 +164,6 @@ def clean_up(extid):
       os.system('clear')
       print(f'{round(100*(int(extid))/154)}% clean')
       break
-  
-def reset_texts():
-  for id in ids:
-    with open(f'bakupsonnets/{id}.txt') as f:
-      for line in f:
-        with open(f'sonnets/{id}.txt', 'w') as h:
-          h.write(line)
-
-
 def cleaning():
   for id in ids:
     clean_up(id)
@@ -209,20 +188,35 @@ def nonums(extid):
 def nonumsing():
   for id in ids:
     nonums(id)
+def fill_lines(extid):
+  with open(f'sonnets/{extid}.txt','r') as f:
+    for line in f:
+      for x in range(14):
+        if x < 12:
+          lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+        else:
+          lines[f'l{x+1}'].append('    %s' % (line.split('#')[x]).strip())
+def filling_lines():
+  for id in ids:
+    fill_lines(id)
+def print_sonnet(extid):
+  print(f'Poem {extid}:')  
+  for x in range(1,15):
+    print(lines[f'l{x}'][int(extid)-1]) #f'{x}:',
+  
 
-def fill_lines():
-  pass
 
 
-
-
+#091
 
 
 #write_ext()
 fill_ext()
 #write_sonnets(len(extensions))
 fill_ids()
-'''reset_texts()
+reset_texts()
 cleaning()
-nonumsing()'''
-print('done')
+nonumsing()
+filling_lines()
+for id in ids:
+  print_sonnet(id)
