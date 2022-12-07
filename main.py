@@ -5,18 +5,35 @@ os.system('cls')
 '''import pronouncing
 print(pronouncing.rhymes("climbing"))'''
 
-line = []
+#line = [] if unknown errors, include
 extensions = []
 links = []
 ids = []
 syn = []
 errors = []
-lines = {'l1':[],'l2':[],'l3':[],'l4':[],'l5':[],'l6':[],'l7':[],'l8':[],'l9':[],'l10':[],'l11':[],'l12':[],'l13':[],'l14':[],'l15':[]}
+
+lines = {'l1':[],
+         'l2':[],
+         'l3':[],
+         'l4':[],
+         'l5':[],
+         'l6':[],
+         'l7':[],
+         'l8':[],
+         'l9':[],
+         'l10':[],
+         'l11':[],
+         'l12':[],
+         'l13':[],
+         'l14':[],
+         'l15':[]}
+
 # fill = lists
 # write = txts
 # populate = dicts
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
+
 def clear_lines():
   for x in range(1,16):
     with open(f'lines/{x}.txt','w'):
@@ -24,7 +41,6 @@ def clear_lines():
 def find_all_idx(main,sub):
   res = [i for i in range(len(main)) if main.startswith(sub, i)]
   return res
-
 def unicodetoascii(text):
 
     TEXT = (text.
@@ -64,15 +80,12 @@ def unicodetoascii(text):
 
                  )
     return TEXT
-
 def find_indices(list_to_check, item_to_find):
     indices = []
     for idx, value in enumerate(list_to_check):
         if value == item_to_find:
             indices.append(idx)
     return indices
-
-
 def get_synopsis(extnum,extid):
   #print(base+str(extnum))
   r = requests.get(f'{base+str(extnum)}')
@@ -118,12 +131,10 @@ def write_txt_and_synopsi(extnum):
       print('---',extid)
       f.write(unicodetoascii(str(str(link))))
     links.append(link)
-  #get_synopsis(extnum,extid) 
+  '''get_synopsis(extnum,extid)'''
 def write_sonnets(length):
   for x in range(length):
     write_txt_and_synopsi(extensions[x])
-
-
 def clean_brid(extid):
   with open(f'sonnets/{extid}.txt') as f:
     for line in f:
@@ -145,7 +156,6 @@ def reset_texts():
       for line in f:
         with open(f'sonnets/{id}.txt', 'w') as h:
           h.write(line)
-
 def clean(folder, extid):  
   with open(f'{folder}/{extid}.txt') as f:
     for line in f:
@@ -235,13 +245,11 @@ def print_sonnet(extid):
       else: 
         print('   ',(lines[f'l{x}'][int(extid)-1]))
   return True
-
 def write_sonnets():
   reset_texts()
   print('Texts Reset')
   cleaning()
   print('Texts Clean')
-  
 def write_lines():
   clear_lines()
   print('Lines Clear')
@@ -250,13 +258,6 @@ def write_lines():
 def fill_ext_ids():
   fill_ext()
   fill_ids()
-
-
-#bad V copy from clean all 3 fx
-
-
-
-
 
 #################################################3
 def clean_syn(folder, extid):  
@@ -277,7 +278,6 @@ def clean_syn(folder, extid):
   
   with open(f'{folder}/{extid}.txt','w') as f:
       f.write(lne)
-
 def clean_up_syn(extid):
   for x in range(100):
     try:
@@ -298,8 +298,6 @@ def cleaning_syn():
   #print(f'{int(100*(154-int(len(errors)))/154)}% clean')
   nonumsing()
   print('No Nums')
-
-
 ####################################
 
   
