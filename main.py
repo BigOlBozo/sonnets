@@ -326,16 +326,20 @@ def write_clean_synopsi():
 def print_synopsi(extid):
   with open(f'synopsi/{extid}syn.txt',encoding='utf-8') as f:
     for line in f:
-      print(f'\n{line}')
+      print(f'\nSynopsis:\n{line}')
 def lookup():
   request = input('\nLooking for something?\nPick a number 1-154!\nNumber: ').rjust(3,'0')
-  try:
-    print_synopsi(request)
-    print_sonnet(request)
-  except:
-    print('Sorry, that\'s not a valid input!')
+  if request.lower().strip('0') == 'x' or request.lower().strip('0') == 'exit':
+    print('Have a Good Day!')
+    exit()
+  else:
+    try:
+      print_synopsi(request)
+      print_sonnet(request)
+    except:
+      print('Sorry, that\'s not a valid input!')
+      lookup()
     lookup()
-  lookup()
 # V actually running V #
 
           
