@@ -3,15 +3,14 @@ from bs4 import BeautifulSoup as BS
 import os
 os.system('cls')
 from pronouncing import rhymes
-#print(rhymes("climbing"))
-
+#print(rhymes('ornament'))
 #line = [] if unknown errors, include
 extensions = []
 links = []
 ids = []
 syn = []
 errors = []
-
+print(rhymes('advent'))
 lines = {'l1':[],
          'l2':[],
          'l3':[],
@@ -33,7 +32,6 @@ lines = {'l1':[],
 # populate = dicts
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-print(rhymes('idolatry'))
 def clear_lines():
   for x in range(1,16):
     with open(f'lines/{x}.txt','w'):
@@ -302,25 +300,26 @@ def lookup():
       print('\nSorry, that\'s not a valid input!')
       lookup()
     lookup()
-def rhyming_lines():
+def rhymable_lines(x):
   with open('errors.txt','w') as f:
     f.write('Sonnet,Line,Word\n')
-  for x in range(len(lines['l1'])): #each sonnet
-    for lnum in lines: #each line
-      #print(x,lnum)
-      lne = ''
-      if len(lines[lnum][x]) != 0:
-        for char in lines[lnum][x].split()[-1]:
-          if char.isalnum():
-            lne += char
-        if len(rhymes(lne)) == 0:
-          with open('errors.txt','a') as f:
-            f.write(f'{lne}') #{x},{lnum},
-            f.write('\n')
-          '''print(f'No Match: Son{x} {lnum} Word:{lne}')'''
-
+  #for x in range(len(lines['l1'])): #each sonnet
+  for lnum in lines: #each line
+    #print(x,lnum)
+    lne = ''
+    if len(lines[lnum][x]) != 0:
+      for char in lines[lnum][x].split()[-1]:
+        if char.isalnum():
+          lne += char
+      if len(rhymes(lne)) == 0:
+        with open('errors.txt','a') as f:
+          f.write(f'{x, lnum, lne}') #{x},{lnum},
+          f.write('\n')
+        if lne[-3::] == 'ent':
+          lne = 'accent'
+  return lne
 #https://stackoverflow.com/questions/25714531/find-rhyme-using-nltk-in-python
-json_entries = None
+'''json_entries = None
 
 def tup2dict(tup, di):
   for a, b in tup:
@@ -370,9 +369,9 @@ def isRhyme(word1, word2, level):
         for b in word2_syllables_arrs:
             if a[-level:] == b[-level:]:
                 return True
-    return False
+    return False'''
 # V actually running V #
-print(isRhyme('rough','tough', 2))
+#print(isRhyme('rough','tough', 2))
 #write_ext() #only need once
 fill_ext_ids() #need
 #write_sonnets() # from site
@@ -381,8 +380,14 @@ write_lines() #need -> #also fills lines
 #write_clean_synopsi() #from bkup
 check_for_tags()
 #lookup()
-rhyming_lines()
-with open('errors.txt') as f:
+#lookup()
+rhymable_lines()
+'''with open('errors.txt') as f:
   for line in f:
-    print(line.split(',')[2])
-    
+    if len(rhymes(line)) > 0:
+      print(rhymes(line))
+    else:
+      print('--')'''
+
+
+'''print(rhymes('majesty'))'''
