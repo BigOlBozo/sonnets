@@ -2,8 +2,8 @@ import requests
 from bs4 import BeautifulSoup as BS
 import os
 os.system('cls')
-'''import pronouncing
-print(pronouncing.rhymes("climbing"))'''
+from pronouncing import rhymes
+#print(rhymes("climbing"))
 
 #line = [] if unknown errors, include
 extensions = []
@@ -33,7 +33,7 @@ lines = {'l1':[],
 # populate = dicts
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-
+print(rhymes('idolatry'))
 def clear_lines():
   for x in range(1,16):
     with open(f'lines/{x}.txt','w'):
@@ -302,9 +302,77 @@ def lookup():
       print('\nSorry, that\'s not a valid input!')
       lookup()
     lookup()
-# V actually running V #
+def rhyming_lines():
+  with open('errors.txt','w') as f:
+    f.write('Sonnet,Line,Word\n')
+  for x in range(len(lines['l1'])): #each sonnet
+    for lnum in lines: #each line
+      #print(x,lnum)
+      lne = ''
+      if len(lines[lnum][x]) != 0:
+        for char in lines[lnum][x].split()[-1]:
+          if char.isalnum():
+            lne += char
+        if len(rhymes(lne)) == 0:
+          with open('errors.txt','a') as f:
+            f.write(f'{lne}') #{x},{lnum},
+            f.write('\n')
+          '''print(f'No Match: Son{x} {lnum} Word:{lne}')'''
 
-          
+#https://stackoverflow.com/questions/25714531/find-rhyme-using-nltk-in-python
+json_entries = None
+
+def tup2dict(tup, di):
+  for a, b in tup:
+      di.setdefault(a, []).append(b)
+  return di
+import json
+def init_cmu(args):
+  import nltk
+  nltk.download('cmudict')
+  nltk.corpus.cmudict.ensure_loaded()
+  cmu_entries = nltk.corpus.cmudict.entries()
+  cmu_dict = dict()
+  tup2dict(cmu_entries, cmu_dict)
+  with open('./maps/cmu.json', 'w') as convert_file:
+      convert_file.write(json.dumps(cmu_dict))
+
+def require_rhyme_dict():
+    global json_entries
+    if json_entries:
+        return
+    try:
+        jsonf = open('./maps/cmu.json', 'r')
+    except:
+        pass
+    else:
+        # Global
+        json_entries = dict(json.load(jsonf))
+        jsonf.close()
+        print('json_entries loaded.')
+
+def isContainSameWord(word1, word2):
+    if word1 in word2 or word2 in word1:
+        return True
+    else:
+        return False
+
+def isRhyme(word1, word2, level):
+    require_rhyme_dict()
+    global json_entries
+    if isContainSameWord(word1, word2):
+        return False
+    word1_syllable_arrs = json_entries.get(word1)
+    word2_syllables_arrs = json_entries.get(word2)
+    if not word1_syllable_arrs or not word2_syllables_arrs:
+        return False
+    for a in word1_syllable_arrs:
+        for b in word2_syllables_arrs:
+            if a[-level:] == b[-level:]:
+                return True
+    return False
+# V actually running V #
+print(isRhyme('rough','tough', 2))
 #write_ext() #only need once
 fill_ext_ids() #need
 #write_sonnets() # from site
@@ -313,4 +381,8 @@ write_lines() #need -> #also fills lines
 #write_clean_synopsi() #from bkup
 check_for_tags()
 #lookup()
-
+rhyming_lines()
+with open('errors.txt') as f:
+  for line in f:
+    print(line.split(',')[2])
+    
