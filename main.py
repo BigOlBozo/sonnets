@@ -236,16 +236,31 @@ def filling_and_writing_lines():
   for id in ids:
     fill_lines(id)
 def print_sonnet(extid):
-  print(f'Sonnet {extid}:')  
+  print(f'\nSonnet {extid}:\n')  
   #print(len(lines['l14']))
-  for x in range(1,16):
-    if len(lines[f'l{x}'][int(extid)-1]) != 0:
-      if x < 13:
-        print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
-      else: 
-        print('   ',(lines[f'l{x}'][int(extid)-1]))
+  if extid == '099':
+    for x in range(1,16):
+      if len(lines[f'l{x}'][int(extid)-1]) != 0:
+        if x < 14:
+          print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+        else: 
+          print('   ',(lines[f'l{x}'][int(extid)-1]))
+  elif extid == '126':
+    for x in range(1,16):
+      if len(lines[f'l{x}'][int(extid)-1]) != 0:
+        if x < 11:
+          print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+        else: 
+          print('   ',(lines[f'l{x}'][int(extid)-1]))
+  else:
+    for x in range(1,16):
+      if len(lines[f'l{x}'][int(extid)-1]) != 0:
+        if x < 13:
+          print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+        else: 
+          print('   ',(lines[f'l{x}'][int(extid)-1]))
   return True
-def write_sonnets():
+def write_sonnets_bkup():
   reset_texts()
   print('Texts Reset')
   cleaning()
@@ -254,19 +269,18 @@ def write_lines():
   clear_lines()
   print('Lines Clear')
   filling_and_writing_lines()
-  print('Lines Written')
+  print('Lines Filled & Written')
 def fill_ext_ids():
   fill_ext()
   fill_ids()
-
-#################################################3
 def clean_syn(folder, extid):  
   x = 0
-  with open(f'{folder}/{extid}syn.txt') as f:
+  with open(f'{folder}/{extid}syn.txt',encoding='utf-8') as f:
     for line in f:
       x += 1
       lne = line
-  #line = unicodetoascii(line)
+  if x != 1: # if more than one line for some reason
+    print(extid, x)
   try:
     ope = lne.index('<')
     clse = lne.index('>')
@@ -274,18 +288,16 @@ def clean_syn(folder, extid):
     lne = lne.replace(to_remove,'')
   except:
     pass
-    #print(extid, 'no tags')
-  with open(f'{folder}/{extid}syn.txt','w') as f:
-      f.write(lne)
-  if x != 1:
-    print(extid, x)
+  with open(f'{folder}/{extid}syn.txt','w',encoding='utf-8') as f:
+      f.write(lne)  
 def clean_up_syn(extid):
-  for x in range(20):
+  for x in range(10):
+    clean_syn('synopsi',extid)
     try:
       #print(extid)
-      clean_syn('synopsi',extid)
+      pass
     except:
-      print(extid,x)
+      #print(extid,x)
       #print(extid, 'error')
       #os.system('clear')
       #print(extid) #f'{round(100*(int(extid))/154)}% clean'
@@ -293,19 +305,7 @@ def clean_up_syn(extid):
 def cleaning_syn():
   for id in ids:
     clean_up_syn(id)
-    #print(id)
-    '''with open(f'synopsi/{id}syn.txt', encoding="utf-8") as f:
-      for line in f:
-        if '<' in line:
-          print('---',id)
-          errors.append(line)'''
-  
-  #print(f'{int(100*(154-int(len(errors)))/154)}% clean')
-  #nonumsing()
-  #print('No Nums')
-####################################
-
-# V actually running V
+    '''print(id)'''
 def reset_synopsi():
   for id in ids:
     with open(f'backupsynopsi/{id}syn.txt',encoding="utf-8") as f:
@@ -314,28 +314,37 @@ def reset_synopsi():
           h.write(line)
         break
   print('Synopsi Reset')
+def check_for_tags():
+  for id in ids:
+    with open(f'synopsi/{id}syn.txt', encoding="utf-8") as f:
+      for line in f:
+        if '<' in str(line):
+          print('tag present in', id)
+def write_clean_synopsi():
+  reset_synopsi()
+  cleaning_syn()
+def print_synopsi(extid):
+  with open(f'synopsi/{extid}syn.txt',encoding='utf-8') as f:
+    for line in f:
+      print(f'\n{line}')
+def lookup():
+  request = input('\nLooking for something?\nPick a number 1-154!\nNumber: ').rjust(3,'0')
+  try:
+    print_synopsi(request)
+    print_sonnet(request)
+  except:
+    print('Sorry, that\'s not a valid input!')
+    lookup()
+  lookup()
+# V actually running V #
 
           
-#write_ext()
-fill_ext_ids()
-#write_sonnets()
-write_lines()
-reset_synopsi()
-#print_sonnet('128')
-cleaning_syn()
-#tag present in 016
-#tag present in 019
-#tag present in 039
-#tag present in 040
-#tag present in 044
-#tag present in 045
-#tag present in 047
-#tag present in 055
-#tag present in 068
-#tag present in 086
-#tag present in 099
-for id in ids:
-  with open(f'synopsi/{id}syn.txt', encoding="utf-8") as f:
-    for line in f:
-      if '<' in str(line):
-        print('tag present in', id)
+#write_ext() #only need once
+fill_ext_ids() #need
+#write_sonnets() # from site
+#write_sonnets_bkup() #from bkup
+write_lines() #also fills lines
+#write_clean_synopsi() #from bkup
+check_for_tags()
+lookup()
+
