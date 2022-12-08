@@ -312,5 +312,5 @@ fill_ext_ids() #need
 write_lines() #need -> #also fills lines
 #write_clean_synopsi() #from bkup
 check_for_tags()
-lookup()
+#lookup()
 
