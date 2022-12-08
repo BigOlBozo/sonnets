@@ -42,44 +42,8 @@ def find_all_idx(main,sub):
   res = [i for i in range(len(main)) if main.startswith(sub, i)]
   return res
 def unicodetoascii(text):
-
-    TEXT = (text.
-    		replace('\\xe2\\x80\\x99', "'").
-            replace('\\xc3\\xa9', 'e').
-            replace('\\xc3\\xa8','e').
-            replace('⌜','@').
-            replace('⌝','$').
-            replace('\\xc2\\xa0', '').
-            replace('\\xe2\\x8c\\x9c','').
-            replace('\\xe2\\x8c\\x9d','').
-            replace('\\xe2\\x80\\x90', '-').
-            replace('\\xe2\\x80\\x91', '-').
-            replace('\\xe2\\x80\\x92', '-').
-            replace('\\xe2\\x80\\x93', '-').
-            replace('\\xe2\\x80\\x94', '-').
-            replace('\\xe2\\x80\\x94', '-').
-            replace('\\xe2\\x80\\x98', "'").
-            replace('\\xe2\\x80\\x9b', "'").
-            replace('\\xe2\\x80\\x9c', '"').
-            replace('\\xe2\\x80\\x9c', '"').
-            replace('\\xe2\\x80\\x9d', '"').
-            replace('\\xe2\\x80\\x9e', '"').
-            replace('\\xe2\\x80\\x9f', '"').
-            replace('\\xe2\\x80\\xa6', '...').
-            replace('\\xe2\\x80\\xb2', "'").
-            replace('\\xe2\\x80\\xb3', "'").
-            replace('\\xe2\\x80\\xb4', "'").
-            replace('\\xe2\\x80\\xb5', "'").
-            replace('\\xe2\\x80\\xb6', "'").
-            replace('\\xe2\\x80\\xb7', "'").
-            replace('\\xe2\\x81\\xba', "+").
-            replace('\\xe2\\x81\\xbb', "-").
-            replace('\\xe2\\x81\\xbc', "=").
-            replace('\\xe2\\x81\\xbd', "(").
-            replace('\\xe2\\x81\\xbe', ")")
-
-                 )
-    return TEXT
+  TEXT = (text.replace('\\xe2\\x80\\x99', "'").replace('\\xc3\\xa9', 'e').replace('\\xc3\\xa8','e').replace('⌜','@').replace('⌝','$').replace('\\xc2\\xa0', '').replace('\\xe2\\x8c\\x9c','').replace('\\xe2\\x8c\\x9d','').replace('\\xe2\\x80\\x90', '-').replace('\\xe2\\x80\\x91', '-').replace('\\xe2\\x80\\x92', '-').replace('\\xe2\\x80\\x93', '-').replace('\\xe2\\x80\\x94', '-').replace('\\xe2\\x80\\x94', '-').replace('\\xe2\\x80\\x98', "'").replace('\\xe2\\x80\\x9b', "'").replace('\\xe2\\x80\\x9c', '"').replace('\\xe2\\x80\\x9c', '"').replace('\\xe2\\x80\\x9d', '"').replace('\\xe2\\x80\\x9e', '"').replace('\\xe2\\x80\\x9f', '"').replace('\\xe2\\x80\\xa6', '...').replace('\\xe2\\x80\\xb2', "'").replace('\\xe2\\x80\\xb3', "'").replace('\\xe2\\x80\\xb4', "'").replace('\\xe2\\x80\\xb5', "'").replace('\\xe2\\x80\\xb6', "'").replace('\\xe2\\x80\\xb7', "'").replace('\\xe2\\x81\\xba', "+").replace('\\xe2\\x81\\xbb', "-").replace('\\xe2\\x81\\xbc', "=").replace('\\xe2\\x81\\xbd', "(").replace('\\xe2\\x81\\xbe', ")"))
+  return TEXT
 def find_indices(list_to_check, item_to_find):
     indices = []
     for idx, value in enumerate(list_to_check):
@@ -99,7 +63,6 @@ def get_synopsis(extnum,extid):
       print(close)
     else:
       print(extid)'''
-     
     syntext = (syn[0])[(close[1]+1):opn[-2]]
     f.write(syntext)
   syn.clear()
@@ -161,7 +124,6 @@ def clean(folder, extid):
     for line in f:
       line = line
   line = unicodetoascii(line)
-  
   line = line.replace('\\n',' ')
   line = line.strip('\'b')
   line = line.replace('<br/>','#')
@@ -337,7 +299,7 @@ def lookup():
       print_synopsi(request)
       print_sonnet(request)
     except:
-      print('Sorry, that\'s not a valid input!')
+      print('\nSorry, that\'s not a valid input!')
       lookup()
     lookup()
 # V actually running V #
@@ -347,7 +309,7 @@ def lookup():
 fill_ext_ids() #need
 #write_sonnets() # from site
 #write_sonnets_bkup() #from bkup
-write_lines() #also fills lines
+write_lines() #need -> #also fills lines
 #write_clean_synopsi() #from bkup
 check_for_tags()
 lookup()
