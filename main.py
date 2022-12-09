@@ -319,57 +319,7 @@ def rhymable_lines(x):
           lne = 'accent'
   return lne
 #https://stackoverflow.com/questions/25714531/find-rhyme-using-nltk-in-python
-'''json_entries = None
 
-def tup2dict(tup, di):
-  for a, b in tup:
-      di.setdefault(a, []).append(b)
-  return di
-import json
-def init_cmu(args):
-  import nltk
-  nltk.download('cmudict')
-  nltk.corpus.cmudict.ensure_loaded()
-  cmu_entries = nltk.corpus.cmudict.entries()
-  cmu_dict = dict()
-  tup2dict(cmu_entries, cmu_dict)
-  with open('./maps/cmu.json', 'w') as convert_file:
-      convert_file.write(json.dumps(cmu_dict))
-
-def require_rhyme_dict():
-    global json_entries
-    if json_entries:
-        return
-    try:
-        jsonf = open('./maps/cmu.json', 'r')
-    except:
-        pass
-    else:
-        # Global
-        json_entries = dict(json.load(jsonf))
-        jsonf.close()
-        print('json_entries loaded.')
-
-def isContainSameWord(word1, word2):
-    if word1 in word2 or word2 in word1:
-        return True
-    else:
-        return False
-
-def isRhyme(word1, word2, level):
-    require_rhyme_dict()
-    global json_entries
-    if isContainSameWord(word1, word2):
-        return False
-    word1_syllable_arrs = json_entries.get(word1)
-    word2_syllables_arrs = json_entries.get(word2)
-    if not word1_syllable_arrs or not word2_syllables_arrs:
-        return False
-    for a in word1_syllable_arrs:
-        for b in word2_syllables_arrs:
-            if a[-level:] == b[-level:]:
-                return True
-    return False'''
 # V actually running V #
 #print(isRhyme('rough','tough', 2))
 #write_ext() #only need once
