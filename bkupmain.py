@@ -10,22 +10,28 @@ links = []
 ids = []
 syn = []
 errors = []
-lwdpson = []
-#print(rhymes('latest'))
-poems = {}
-lines = {}
+print(rhymes('advent'))
+lines = {'l1':[],
+         'l2':[],
+         'l3':[],
+         'l4':[],
+         'l5':[],
+         'l6':[],
+         'l7':[],
+         'l8':[],
+         'l9':[],
+         'l10':[],
+         'l11':[],
+         'l12':[],
+         'l13':[],
+         'l14':[],
+         'l15':[]}
 
 # fill = lists
 # write = txts
 # populate = dicts
 
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-def create_poem_dicts():
-  for a in range(1,155):
-    for x in range(1,16):
-      lines[f'l{x}'] = {'line text':[],'last word rhymes':[]}
-      poems[f'{str(a).rjust(3,"0")}'] = lines
-  poems['001']['l3']['last word rhymes'] = 'yabba'
 def clear_lines():
   for x in range(1,16):
     with open(f'lines/{x}.txt','w'):
@@ -161,9 +167,34 @@ def nonums(extid):
 def nonumsing():
   for id in ids:
     nonums(id)
-
-
-    
+def fill_lines(extid):
+  with open(f'sonnets/{extid}.txt','r') as f:
+    #print(extid)
+    for line in f:
+      for x in range(14):
+        try:
+          lines[f'l{x+1}'].append((line.split('#')[x]).strip())
+          with open(f'lines/{x+1}.txt','a') as f:
+            f.write((line.split('#')[x]).strip())
+            f.write('\n')
+        except:
+          lines[f'l{x+1}'].append('')
+          with open(f'lines/{x+1}.txt','a') as f:
+              f.write('')
+              f.write('\n')
+      if extid != '099':
+        lines['l15'].append('')
+      else:
+        lines['l15'].append((line.split('#')[14]).strip())
+      with open(f'lines/15.txt','a') as f:
+        try:
+          f.write((line.split('#')[14]).strip())
+        except:
+          f.write('')
+        f.write('\n')
+def filling_and_writing_lines():
+  for id in ids:
+    fill_lines(id)
 def print_sonnet(extid):
   print(f'\nSonnet {extid}:\n')  
   #print(len(lines['l14']))
@@ -194,16 +225,11 @@ def write_sonnets_bkup():
   print('Texts Reset')
   cleaning()
   print('Texts Clean')
-
-
-
-def write_lines():#new line stx, rewrite 
+def write_lines():
   clear_lines()
   print('Lines Clear')
   filling_and_writing_lines()
   print('Lines Filled & Written')
-#####
-  
 def fill_ext_ids():
   fill_ext()
   fill_ids()
@@ -227,7 +253,15 @@ def clean_syn(folder, extid):
 def clean_up_syn(extid):
   for x in range(10):
     clean_syn('synopsi',extid)
-    
+    try:
+      #print(extid)
+      pass
+    except:
+      #print(extid,x)
+      #print(extid, 'error')
+      #os.system('clear')
+      #print(extid) #f'{round(100*(int(extid))/154)}% clean'
+      break
 def cleaning_syn():
   for id in ids:
     clean_up_syn(id)
@@ -267,7 +301,6 @@ def lookup():
       lookup()
     lookup()
 def rhymable_lines(x):
-  lwdpson.clear()
   with open('errors.txt','w') as f:
     f.write('Sonnet,Line,Word\n')
   #for x in range(len(lines['l1'])): #each sonnet
@@ -284,52 +317,8 @@ def rhymable_lines(x):
           f.write('\n')
         if lne[-3::] == 'ent':
           lne = 'accent'
-        if lne[-3::] == 'est' and len(rhymes(lne)) == 0:
-          lne = 'greatest'
-        '''checkpoint
-        if len(rhymes(lne)) == 0:
-          print(lne)'''
-
-    if lne[-3::] == 'age' and len(rhymes(lne)) == 0:
-      print(x, lne)
-        
-      #return lne
-    '''if len(lne) != 0:
-      pass
-      #lwdpson.append(rhymes(lne))
-    if len(rhymes(lne)) == 0 and len(lne) != 0:
-      lwdpson.append(lne)'''
-  #return lwdpson
-#new line stx, rewrite
-def fill_lines(extid):
-  with open(f'sonnets/{extid}.txt','r') as f:
-    #print(extid)
-    for line in f:
-      for x in range(14): 
-        try:
-          poems[extid][f'l{x+1}']['line text'] = line.split('#')[x].strip()
-          with open(f'lines/{x+1}.txt','a') as f:
-            f.write((line.split('#')[x]).strip())
-            f.write('\n')
-        except:
-          poems[extid][f'l{x+1}']['line text'] = ''
-          with open(f'lines/{x+1}.txt','a') as f:
-              f.write('')
-              f.write('\n')
-      if extid != '099':
-        poems[extid]['l15']['line text'] = ''
-      else:
-        poems[extid]['l15']['line text'] = line.split('#')[14].strip()
-      with open(f'lines/15.txt','a') as f:
-        try:
-          f.write((line.split('#')[14]).strip())
-        except:
-          f.write('')
-        f.write('\n')
-def filling_and_writing_lines():
-  for id in ids:
-    fill_lines(id)
-#######
+  return lne
+#https://stackoverflow.com/questions/25714531/find-rhyme-using-nltk-in-python
 
 # V actually running V #
 #print(isRhyme('rough','tough', 2))
@@ -337,18 +326,12 @@ def filling_and_writing_lines():
 fill_ext_ids() #need
 #write_sonnets() # from site
 #write_sonnets_bkup() #from bkup
-create_poem_dicts()
-#write_lines() #need -> #also fills lines #new line stx, rewrite
+write_lines() #need -> #also fills lines
 #write_clean_synopsi() #from bkup
-#check_for_tags()
+check_for_tags()
 #lookup()
-
-print(poems['001']['l3']['last word rhymes'])
-
-
-
-'''for x in range(154): #new line stx, rewrite
-  rhymable_lines(x)'''
+#lookup()
+rhymable_lines()
 '''with open('errors.txt') as f:
   for line in f:
     if len(rhymes(line)) > 0:
