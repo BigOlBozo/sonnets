@@ -1,4 +1,5 @@
 import requests
+import keyboard
 from bs4 import BeautifulSoup as BS
 import os
 os.system('cls')
@@ -18,14 +19,15 @@ lines = {}
 # fill = lists
 # write = txts
 # populate = dicts
-
+'''if keyboard.is_pressed('x') == True:
+    exit()'''
 base ='https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
 def create_poem_dicts():
   for a in range(1,155):
     for x in range(1,16):
       lines[f'l{x}'] = {'line text':[],'last word rhymes':[]}
       poems[f'{str(a).rjust(3,"0")}'] = lines
-  poems['001']['l3']['last word rhymes'] = 'yabba'
+  #poems['001']['l3']['last word rhymes'] = 'yabba'
 def clear_lines():
   for x in range(1,16):
     with open(f'lines/{x}.txt','w'):
@@ -183,11 +185,11 @@ def print_sonnet(extid):
           print('   ',(lines[f'l{x}'][int(extid)-1]))
   else:
     for x in range(1,16):
-      if len(lines[f'l{x}'][int(extid)-1]) != 0:
+      if len(poems[extid][f'l{x}']['line text']) != 0:
         if x < 13:
-          print((lines[f'l{x}'][int(extid)-1])) #f'{x}:',
+          print((poems[extid][f'l{x}']['line text'])) #f'{x}:',
         else: 
-          print('   ',(lines[f'l{x}'][int(extid)-1]))
+          print('  ',poems[extid][f'l{x}']['line text'])
   return True
 def write_sonnets_bkup():
   reset_texts()
@@ -254,6 +256,7 @@ def print_synopsi(extid):
     for line in f:
       print(f'\nSynopsis:\n{line}')
 def lookup():
+  
   request = input('\nLooking for something?\nPick a number 1-154!\nNumber: ').rjust(3,'0')
   if request.lower().strip('0') == 'x' or request.lower().strip('0') == 'exit':
     print('Have a Good Day!')
@@ -266,21 +269,20 @@ def lookup():
       print('\nSorry, that\'s not a valid input!')
       lookup()
     lookup()
-def rhymable_lines(x):
+def rhymable_lines(extid):
   lwdpson.clear()
   with open('errors.txt','w') as f:
     f.write('Sonnet,Line,Word\n')
   #for x in range(len(lines['l1'])): #each sonnet
-  for lnum in lines: #each line
-    #print(x,lnum)
+  for lnum in lines: #each line 
     lne = ''
-    if len(lines[lnum][x]) != 0:
-      for char in lines[lnum][x].split()[-1]:
+    if len(poems[extid][lnum]['line text']) != 0:
+      for char in poems[extid][lnum]['line text'].split()[-1]:
         if char.isalnum():
           lne += char
       if len(rhymes(lne)) == 0:
         with open('errors.txt','a') as f:
-          f.write(f'{x, lnum, lne}') #{x},{lnum},
+          f.write(f'{extid, lnum, lne}') #{x},{lnum},
           f.write('\n')
         if lne[-3::] == 'ent':
           lne = 'accent'
@@ -289,10 +291,10 @@ def rhymable_lines(x):
         '''checkpoint
         if len(rhymes(lne)) == 0:
           print(lne)'''
-
-    if lne[-3::] == 'age' and len(rhymes(lne)) == 0:
-      print(x, lne)
-        
+        if lne[-3::] == 'age' and len(rhymes(lne)) == 0:
+          print(extid, lne)
+    poems[extid][lnum]['last word ryhmes'] = rhymes(lne)
+    print('rhymes:', poems[extid][lnum]['last word ryhmes'])
       #return lne
     '''if len(lne) != 0:
       pass
@@ -332,18 +334,21 @@ def filling_and_writing_lines():
 #######
 
 # V actually running V #
-#print(isRhyme('rough','tough', 2))
 #write_ext() #only need once
 fill_ext_ids() #need
 #write_sonnets() # from site
 #write_sonnets_bkup() #from bkup
-create_poem_dicts()
-#write_lines() #need -> #also fills lines #new line stx, rewrite
+create_poem_dicts() #need before printing lines/rhymes
+write_lines() #need -> #also fills lines 
 #write_clean_synopsi() #from bkup
-#check_for_tags()
+check_for_tags()
+#print(lines)
+print(lines)
+print(poems['001'])
+#rhymable_lines('001')
 #lookup()
 
-print(poems['001']['l3']['last word rhymes'])
+print(poems['154']['l14']['line text'])
 
 
 
