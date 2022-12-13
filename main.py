@@ -194,18 +194,18 @@ def print_sonnet(extid):
   #print(len(lines['l14']))
   if extid == '099':
     for x in range(1, 16):
-      if len(lines[f'l{x}'][int(extid) - 1]) != 0:
+      if len(poems[extid][f'l{x}']['lineTxt']) != 0:
         if x < 14:
-          print((lines[f'l{x}'][int(extid) - 1]))  #f'{x}:',
+          print((poems[extid][f'l{x}']['lineTxt']))  #f'{x}:',
         else:
-          print('   ', (lines[f'l{x}'][int(extid) - 1]))
+          print('  ', poems[extid][f'l{x}']['lineTxt'])
   elif extid == '126':
     for x in range(1, 16):
-      if len(lines[f'l{x}'][int(extid) - 1]) != 0:
+      if len(poems[extid][f'l{x}']['lineTxt']) != 0:
         if x < 11:
-          print((lines[f'l{x}'][int(extid) - 1]))  #f'{x}:',
+          print((poems[extid][f'l{x}']['lineTxt']))  #f'{x}:',
         else:
-          print('   ', (lines[f'l{x}'][int(extid) - 1]))
+          print('  ', poems[extid][f'l{x}']['lineTxt'])
   else:
     for x in range(1, 16):
       if len(poems[extid][f'l{x}']['lineTxt']) != 0:
