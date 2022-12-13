@@ -3,14 +3,13 @@ import keyboard
 from bs4 import BeautifulSoup as BS
 import os
 from pronouncing import rhymes
-
+os.system('cls')
 extensions = []
 links = []
 ids = []
 syn = []
 errors = []
 poems = {}
-
 # fill = lists
 # write = txts
 # populate = dicts
@@ -340,15 +339,54 @@ def remove_punctuation(extid, lnum, lword):
     if char.isalnum():
       lne += char
   return lne
-
-def check_from_match(extid):
-  for lnum in poems[extid]:
-    if len(poems[extid][lnum]['lineTxt']) != 0: #not an empty line
-      if len(rhymes(lne)) == 0:
-        if lnum == 'l1':
-          lne = remove_punctuation(extid, lnum, 'l3')
-          poems[extid][lnum]['wdRhymes'] = rhymes(lne)
+def matching(blank):
+  if blank == 'l1':
+    match = 'l3'
+  if blank == 'l2':
+    match = 'l4'
+  if blank == 'l3':
+    match = 'l1'
+  if blank == 'l4':
+    match = 'l2'
+  if blank == 'l5':
+    match = 'l7'
+  if blank == 'l6':
+    match = 'l8'
+  if blank == 'l7':
+    match = 'l5'
+  if blank == 'l8':
+    match = 'l6'
+  if blank == 'l9':
+    match = 'l11'
+  if blank == 'l10':
+    match = 'l12'
+  if blank == 'l11':
+    match = 'l9'
+  if blank == 'l12':
+    match = 'l10'
+  if blank == 'l13':
+    match = 'l14'
+  if blank == 'l14':
+    match = 'l13'
+  return match
+  
+def check_for_match(extid):
+  if extid != '126':
+    for lnum in poems[extid]:
+      if len(poems[extid][lnum]['lineTxt']) != 0: #not an empty line
+        lne = remove_punctuation(extid, lnum, poems[extid][lnum]['lineTxt'].split()[-1])
+        if len(rhymes(lne)) == 0:
+          lnumMatch = matching(lnum)
+          poems[extid][lnum]['wdRhymes'] = poems[extid][lnumMatch]['wdRhymes']
+          print(lnum,'--',poems[extid][lnum]['wdRhymes'])
+        if len(poems[extid][lnum]['wdRhymes']) == 0:
+          print(f'{extid},{lnum},{lne}')
+  
     #26 055,l1,monuments
+def checking_for_matches():
+  for id in ids:
+    check_for_match(id)
+
 def fill_lines(extid):
   with open(f'sonnets/{extid}.txt', 'r') as f:
     for line in f:
@@ -385,7 +423,13 @@ def fill_rhymes():
     rhymable_lines(id)
   print('Rhymes Found')
 
-
+def blanks():
+  for id in ids:
+    for lnum in poems[id]:
+      if poems[id][lnum]['wdRhymes'] == [] and lnum != 'l15':
+        print(id,lnum)
+def build_your_own():
+  
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -396,3 +440,4 @@ create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
 lookup()
+
