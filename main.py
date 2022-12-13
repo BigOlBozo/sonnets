@@ -3,7 +3,7 @@ import keyboard
 from bs4 import BeautifulSoup as BS
 import os
 from pronouncing import rhymes
-os.system('cls')
+#os.system('cls')
 extensions = []
 links = []
 ids = []
@@ -436,19 +436,75 @@ def create_diy_dict():
     lines[f'diyl{x}'] = {'lineTxt': [], 'wdRhymes': []}
   diy_sonnet = lines
   return diy_sonnet
-def print_options(last_word,lnum):
+
+def print_options(last_word, lnum, id_options):
+  options = {}
+  #print(id_options)
+  for x in range(1,11):
+    options[x] = ''
   line_matches = []
-  #for x in range(1):
-  for id in ids:
+  for id in id_options:
     if last_word in poems[id][lnum]['wdRhymes']:
       line_matches.append(f'{id}.{lnum}')
-  return line_matches
+      id_options.remove(id)
+  id_options_sub = id_options.copy()
+  for id in id_options_sub:
+    if len(line_matches) < 10:
+      try:
+        if len(poems[id][lnum]['wdRhymes']) != 0:
+          line_matches.append(f'{id}.{lnum}')
+          id_options.remove(id)
+        else:
+          line_matches.append(f'{id}.{lnum}')
+          id_options.remove(id)
+      except:
+        print(id)
+  for x in range(len(line_matches)):
+    options[x+1] = line_matches[x]
+  return options, id_options
+  #for generating multiple pages
+def printListOptions(num, options):
+  print(f'Page {num}:')
+  for key in options:
+    print(key, poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'])
+  print('Back/Next')
 def build_your_own():
   diy_dict = create_diy_dict()
-  for x in range(1,15):
-    print(print_options('bean',f'l{x}'))
-  #print(diy_dict)
+  id_options = ids #reset options, for each line
+  #print(print_options('bean',f'l{1}',id_options)[0])
+  p1 = print_options('',f'l{1}',id_options)
+  p2 = print_options('',f'l{1}',p1[1])
+  p3 = print_options('',f'l{1}',p2[1])
+  p4 = print_options('',f'l{1}',p3[1])
+  p5 = print_options('',f'l{1}',p4[1])
+  p6 = print_options('',f'l{1}',p5[1])
+  p7 = print_options('',f'l{1}',p6[1])
+  p8 = print_options('',f'l{1}',p7[1])
+  p9 = print_options('',f'l{1}',p8[1])
+  p10 = print_options('',f'l{1}',p9[1])
+  p11 = print_options('',f'l{1}',p10[1])
+  p12 = print_options('',f'l{1}',p11[1])
+  p13 = print_options('',f'l{1}',p12[1])
+  p14 = print_options('',f'l{1}',p13[1])
+  p15 = print_options('',f'l{1}',p14[1])
+  p16 = print_options('',f'l{1}',p15[1])
+  
+  
 
+  printListOptions(1, p1[0])
+  choice = input()
+  if choice.isnumeric():
+    print(choice)
+
+  #printListOptions(p2[0])
+  #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
+  #print_options('ascent',f'l{1}', p1[1])
+
+
+  
+  #return diy_dict
+
+  
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -458,7 +514,7 @@ fill_ext_ids()  #need
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
-build_your_own()
+print(build_your_own())
 
 #blanks()
 #lookup()
