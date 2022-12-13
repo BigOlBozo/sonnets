@@ -339,6 +339,7 @@ def remove_punctuation(extid, lnum, lword):
     if char.isalnum():
       lne += char
   return lne
+
 def matching(blank):
   if blank == 'l1':
     match = 'l3'
@@ -422,14 +423,23 @@ def fill_rhymes():
   for id in ids:
     rhymable_lines(id)
   print('Rhymes Found')
-
+  
 def blanks():
   for id in ids:
     for lnum in poems[id]:
       if poems[id][lnum]['wdRhymes'] == [] and lnum != 'l15':
         print(id,lnum)
+
+def create_diy_dict():
+  lines = {}
+  for x in range(1, 15):
+    lines[f'diyl{x}'] = {'lineTxt': [], 'wdRhymes': []}
+  diy_sonnet = lines
+  return diy_sonnet
 def build_your_own():
-  pass
+  diy_dict = create_diy_dict()
+  print(diy_dict)
+build_your_own()
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -439,6 +449,6 @@ fill_ext_ids()  #need
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
-blanks()
+#blanks()
 #lookup()
 
