@@ -436,10 +436,19 @@ def create_diy_dict():
     lines[f'diyl{x}'] = {'lineTxt': [], 'wdRhymes': []}
   diy_sonnet = lines
   return diy_sonnet
+def print_options(last_word,lnum):
+  line_matches = []
+  #for x in range(1):
+  for id in ids:
+    if last_word in poems[id][lnum]['wdRhymes']:
+      line_matches.append(f'{id}.{lnum}')
+  return line_matches
 def build_your_own():
   diy_dict = create_diy_dict()
-  print(diy_dict)
-build_your_own()
+  for x in range(1,15):
+    print(print_options('bean',f'l{x}'))
+  #print(diy_dict)
+
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -449,6 +458,8 @@ fill_ext_ids()  #need
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
+build_your_own()
+
 #blanks()
 #lookup()
 
