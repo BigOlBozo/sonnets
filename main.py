@@ -27,6 +27,7 @@ def create_poem_dicts():
       lines[f'l{x}'] = {'lineTxt': [], 'wdRhymes': []}
     poems[f'{str(a).rjust(3,"0")}'] = lines
   print('Poem Dictionary Created')
+
 def clear_lines():
   for x in range(1, 16):
     with open(f'lines/{x}.txt', 'w'):
@@ -126,7 +127,6 @@ def write_txt_and_synopsi(extnum):
       f.write(unicodetoascii(str(str(link))))
     links.append(link)
   '''get_synopsis(extnum,extid)'''
-
 
 def write_sonnets(length):
   for x in range(length):
@@ -230,7 +230,6 @@ def print_sonnet(extid):
           print('  ', poems[extid][f'l{x}']['lineTxt'])
   return True
 
-
 def write_sonnets_bkup():
   reset_texts()
   print('Texts Reset')
@@ -247,6 +246,7 @@ def fill_ext_ids():
   fill_ext()
   fill_ids()
   print('Extensions & Ids Filled')
+  
 def clean_syn(folder, extid):
   x = 0
   with open(f'{folder}/{extid}syn.txt', encoding='utf-8') as f:
@@ -348,12 +348,14 @@ def rhymable_lines(extid):
           f.write(f'{extid},{lnum},{lne}')
           f.write('\n')
     poems[extid][lnum]['wdRhymes'] = rhymes(lne)
+    
 def remove_punctuation(extid, lnum, lword):
   lne = ''
   for char in poems[extid][lnum]['lineTxt'].split()[-1]:
     if char.isalnum():
       lne += char
   return lne
+
 def check_from_match(exitd):
   for lnum in poems[extid]:
     if len(poems[extid][lnum]['lineTxt']) != 0: #not an empty line
