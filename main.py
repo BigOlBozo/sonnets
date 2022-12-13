@@ -429,7 +429,7 @@ def blanks():
       if poems[id][lnum]['wdRhymes'] == [] and lnum != 'l15':
         print(id,lnum)
 def build_your_own():
-  
+  pass
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -439,5 +439,6 @@ fill_ext_ids()  #need
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
-lookup()
+blanks()
+#lookup()
 
