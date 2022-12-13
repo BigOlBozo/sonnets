@@ -39,37 +39,22 @@ def find_all_idx(main, sub):
 
 def unicodetoascii(text):
   TEXT = (text.replace('\\xe2\\x80\\x99', "'").replace(
-    '\\xc3\\xa9', 'e').replace('\\xc3\\xa8', 'e').replace('⌜', '@').replace(
-      '⌝',
-      '$').replace('\\xc2\\xa0', '').replace('\\xe2\\x8c\\x9c', '').replace(
-        '\\xe2\\x8c\\x9d',
-        '').replace('\\xe2\\x80\\x90',
-                    '-').replace('\\xe2\\x80\\x91', '-').replace(
-                      '\\xe2\\x80\\x92',
-                      '-').replace('\\xe2\\x80\\x93', '-').replace(
-                        '\\xe2\\x80\\x94',
-                        '-').replace('\\xe2\\x80\\x94', '-').replace(
-                          '\\xe2\\x80\\x98',
-                          "'").replace('\\xe2\\x80\\x9b', "'").replace(
-                            '\\xe2\\x80\\x9c',
-                            '"').replace('\\xe2\\x80\\x9c', '"').replace(
-                              '\\xe2\\x80\\x9d',
-                              '"').replace('\\xe2\\x80\\x9e', '"').replace(
-                                '\\xe2\\x80\\x9f',
-                                '"').replace('\\xe2\\x80\\xa6', '...').replace(
-                                  '\\xe2\\x80\\xb2',
-                                  "'").replace('\\xe2\\x80\\xb3', "'").replace(
-                                    '\\xe2\\x80\\xb4', "'").replace(
-                                      '\\xe2\\x80\\xb5', "'").replace(
-                                        '\\xe2\\x80\\xb6', "'").replace(
-                                          '\\xe2\\x80\\xb7', "'").replace(
-                                            '\\xe2\\x81\\xba', "+").replace(
-                                              '\\xe2\\x81\\xbb', "-").replace(
-                                                '\\xe2\\x81\\xbc',
-                                                "=").replace(
-                                                  '\\xe2\\x81\\xbd',
-                                                  "(").replace(
-                                                    '\\xe2\\x81\\xbe', ")"))
+'\\xc3\\xa9', 'e').replace('\\xc3\\xa8', 'e').replace(
+'⌜', '@').replace('⌝','$').replace('\\xc2\\xa0', '').replace(
+'\\xe2\\x8c\\x9c', '').replace('\\xe2\\x8c\\x9d','').replace(
+'\\xe2\\x80\\x90','-').replace('\\xe2\\x80\\x91', '-').replace(
+'\\xe2\\x80\\x92','-').replace('\\xe2\\x80\\x93', '-').replace(
+'\\xe2\\x80\\x94','-').replace('\\xe2\\x80\\x94', '-').replace(
+'\\xe2\\x80\\x98',"'").replace('\\xe2\\x80\\x9b', "'").replace(
+'\\xe2\\x80\\x9c','"').replace('\\xe2\\x80\\x9c', '"').replace(
+'\\xe2\\x80\\x9d','"').replace('\\xe2\\x80\\x9e', '"').replace(
+'\\xe2\\x80\\x9f','"').replace('\\xe2\\x80\\xa6', '...').replace(
+'\\xe2\\x80\\xb2',"'").replace('\\xe2\\x80\\xb3', "'").replace(
+'\\xe2\\x80\\xb4', "'").replace('\\xe2\\x80\\xb5', "'").replace(
+'\\xe2\\x80\\xb6', "'").replace('\\xe2\\x80\\xb7', "'").replace(
+'\\xe2\\x81\\xba', "+").replace('\\xe2\\x81\\xbb', "-").replace(
+'\\xe2\\x81\\xbc',"=").replace('\\xe2\\x81\\xbd',"(").replace(
+  '\\xe2\\x81\\xbe', ")"))
   return TEXT
 
 def find_indices(list_to_check, item_to_find):
@@ -342,7 +327,7 @@ def rhymable_lines(extid):
         if char.isalnum():
           lne += char
       if len(rhymes(lne)) == 0:  #no rhymes
-        lne = filter_last_word(lne,lnum)
+        lne = filter_last_word(lne)
       if len(rhymes(lne)) == 0: #still no rhymes
         with open('errors.txt', 'a') as f:
           f.write(f'{extid},{lnum},{lne}')
@@ -356,10 +341,10 @@ def remove_punctuation(extid, lnum, lword):
       lne += char
   return lne
 
-def check_from_match(exitd):
+def check_from_match(extid):
   for lnum in poems[extid]:
     if len(poems[extid][lnum]['lineTxt']) != 0: #not an empty line
-      if len(rhymes(lne)) = 0:
+      if len(rhymes(lne)) == 0:
         if lnum == 'l1':
           lne = remove_punctuation(extid, lnum, 'l3')
           poems[extid][lnum]['wdRhymes'] = rhymes(lne)
@@ -394,6 +379,8 @@ def filling_and_writing_lines():
     fill_lines(id)
     
 def fill_rhymes():
+  with open('errors.txt','w'):
+    pass
   for id in ids:
     rhymable_lines(id)
   print('Rhymes Found')
