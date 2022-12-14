@@ -471,29 +471,47 @@ def printListOptions(num, options):
     except:
       pass
   print('Back/Next')
+def options_page(lnum):
+  id_options = ids
+  p1 = print_options('',f'l{lnum}',id_options)
+  p2 = print_options('',f'l{lnum}',p1[1])
+  p3 = print_options('',f'l{lnum}',p2[1])
+  p4 = print_options('',f'l{lnum}',p3[1])
+  p5 = print_options('',f'l{lnum}',p4[1])
+  p6 = print_options('',f'l{lnum}',p5[1])
+  p7 = print_options('',f'l{lnum}',p6[1])
+  p8 = print_options('',f'l{lnum}',p7[1])
+  p9 = print_options('',f'l{lnum}',p8[1])
+  p10 = print_options('',f'l{lnum}',p9[1])
+  p11 = print_options('',f'l{lnum}',p10[1])
+  p12 = print_options('',f'l{lnum}',p11[1])
+  p13 = print_options('',f'l{lnum}',p12[1])
+  p14 = print_options('',f'l{lnum}',p13[1])
+  p15 = print_options('',f'l{lnum}',p14[1])
+  p16 = print_options('',f'l{lnum}',p15[1])
+  pages = {
+  'p1' : p1,
+  'p2' : p2,
+  'p3' : p3,
+  'p4' : p4,
+  'p5' : p5,
+  'p6' : p6,
+  'p7' : p7,
+  'p8' : p8,
+  'p9' : p9,
+  'p10' : p10,
+  'p11' : p11,
+  'p12' : p12,
+  'p13' : p13,
+  'p14' : p14,
+  'p15' : p15,
+  'p16' : p16
+  }
+  return pages
 def build_your_own():
   diy_dict = create_diy_dict()
-  id_options = ids #reset options, for each line
-  #print(print_options('bean',f'l{1}',id_options)[0])
-  p1 = print_options('',f'l{1}',id_options)
-  p2 = print_options('',f'l{1}',p1[1])
-  p3 = print_options('',f'l{1}',p2[1])
-  p4 = print_options('',f'l{1}',p3[1])
-  p5 = print_options('',f'l{1}',p4[1])
-  p6 = print_options('',f'l{1}',p5[1])
-  p7 = print_options('',f'l{1}',p6[1])
-  p8 = print_options('',f'l{1}',p7[1])
-  p9 = print_options('',f'l{1}',p8[1])
-  p10 = print_options('',f'l{1}',p9[1])
-  p11 = print_options('',f'l{1}',p10[1])
-  p12 = print_options('',f'l{1}',p11[1])
-  p13 = print_options('',f'l{1}',p12[1])
-  p14 = print_options('',f'l{1}',p13[1])
-  p15 = print_options('',f'l{1}',p14[1])
-  p16 = print_options('',f'l{1}',p15[1])
-  
-  printListOptions(1, p1[0])
-  '''choice = input()
+  printListOptions(1, options_page(2)['p1'][0])
+  choice = input()
   if choice.isnumeric():
     print(f'p{choice}'[0]) #no'''
 
