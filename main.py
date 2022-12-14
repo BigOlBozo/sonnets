@@ -466,7 +466,10 @@ def print_options(last_word, lnum, id_options):
 def printListOptions(num, options):
   print(f'Page {num}:')
   for key in options:
-    print(key, poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'])
+    try:  
+      print(key,poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
+    except:
+      pass
   print('Back/Next')
 def build_your_own():
   diy_dict = create_diy_dict()
@@ -489,12 +492,10 @@ def build_your_own():
   p15 = print_options('',f'l{1}',p14[1])
   p16 = print_options('',f'l{1}',p15[1])
   
-  
-
   printListOptions(1, p1[0])
-  choice = input()
+  '''choice = input()
   if choice.isnumeric():
-    print(choice)
+    print(f'p{choice}'[0]) #no'''
 
   #printListOptions(p2[0])
   #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
