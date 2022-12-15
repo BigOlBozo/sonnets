@@ -13,7 +13,7 @@ poems = {}
 # fill = lists
 # write = txts
 # populate = dicts
-
+os.system('cls')
 '''if keyboard.is_pressed('x') == True:
     exit()'''
 
@@ -383,7 +383,6 @@ def check_for_match(extid):
         if len(poems[extid][lnum]['wdRhymes']) == 0:
           print(f'{extid},{lnum},{lne}')
   
-    #26 055,l1,monuments
 def checking_for_matches():
   for id in ids:
     check_for_match(id)
@@ -510,11 +509,16 @@ def options_page(lnum):
   return pages
 def build_your_own():
   diy_dict = create_diy_dict()
-  printListOptions(1, options_page(2)['p1'][0])
-  choice = input()
+  pOptions = options_page(1)
+  
+  printListOptions(1, pOptions['p1'][0])
+  choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
-    print(f'p{choice}'[0]) #no'''
-
+    selection = (pOptions['p1'][0])[int(choice)]
+    print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
+    diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
+    diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+  print(diy_dict)
   #printListOptions(p2[0])
   #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
   #print_options('ascent',f'l{1}', p1[1])
@@ -533,7 +537,7 @@ fill_ext_ids()  #need
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines() #need -> #also fills lines
 fill_rhymes()
-print(build_your_own())
+build_your_own()
 
 #blanks()
 #lookup()
