@@ -507,17 +507,30 @@ def options_page(lnum):
   'p16' : p16
   }
   return pages
-def build_your_own():
-  diy_dict = create_diy_dict()
-  pOptions = options_page(1)
-  
-  printListOptions(1, pOptions['p1'][0])
+def selIntoDict(choice,pOptions,page,diy_dict):
+  selection = (pOptions[page][0])[int(choice)]
+  print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
+  diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
+  diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+def choosing(pOptions,diy_dict,page):
   choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
-    selection = (pOptions['p1'][0])[int(choice)]
-    print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
-    diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
-    diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+    selIntoDict(choice,pOptions,page,diy_dict)
+    #break
+  elif choice.lower() == 'b' and page != 'p1':
+    page = f"p{(int(page.split('p')[1])-1)}"
+    #selIntoDict(choice,pOptions,page,diy_dict)
+    return page
+def build_your_own():
+  
+  diy_dict = create_diy_dict()
+  pOptions = options_page(1)
+  page = 'p2'
+  printListOptions(1, pOptions[page][0])
+  choosing(pOptions,diy_dict,page)
+
+
+  
   print(diy_dict)
   #printListOptions(p2[0])
   #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
