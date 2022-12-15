@@ -463,12 +463,16 @@ def print_options(last_word, lnum, id_options):
   return options, id_options
   #for generating multiple pages
 def printListOptions(num, options):
-  print(f'Page {num}:')
+  print(f'Page {num.split("p")[1]}:')
+  #pOptions = options_page(lnum)
+  print(options)
   for key in options:
-    try:  
-      print(key,poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
-    except:
-      pass
+    #try:  1 : (098.l1), 2: 076.l1
+    #poems[extid][lnum]['lineTxt/wdRhymes']
+    print(key,poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
+    '''except:
+      print(key)
+      pass'''
   print('Back/Next')
 def options_page(lnum):
   id_options = ids
@@ -507,17 +511,41 @@ def options_page(lnum):
   'p16' : p16
   }
   return pages
-def build_your_own():
-  diy_dict = create_diy_dict()
-  pOptions = options_page(1)
-  
-  printListOptions(1, pOptions['p1'][0])
+def choosing(pOptions, choice, diy_dict, pnum):
+  print(pOptions)
+  selection = (pOptions[pnum][0])[int(choice)]
+  print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
+  diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
+  diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+
+def selorpage(pOptions, diy_dict, pnum, lnum):
+  pOptions = options_page(lnum)
+  print('$$', pOptions[pnum][0])
+  printListOptions(pnum, pOptions[pnum][0])
   choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
-    selection = (pOptions['p1'][0])[int(choice)]
-    print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
-    diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
-    diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+    choosing(pOptions, choice, diy_dict,pnum)
+    lnum = int(lnum) + 1
+    pOptions = options_page(lnum)
+    perpage(diy_dict,lnum, pOptions)
+  if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
+    pnum = f'p{(int(pnum.split("p")[1])+1)}'
+    selorpage(pOptions, diy_dict,pnum, lnum)
+  if choice.lower() == 'back' or choice.lower() == 'b' and pnum != 'p1':
+    pnum = f'p{int(pnum.split("p")[1])-1}'
+    selorpage(pOptions, diy_dict,pnum,lnum)
+
+def perpage(diy_dict,lnum, pOptions):
+  print('----',lnum)
+  pnum = 'p1'
+  print('---', pOptions[pnum][0])
+  selorpage(pOptions, diy_dict, pnum,lnum)
+def build_your_own():
+  diy_dict = create_diy_dict()
+  lnum = 1
+  pOptions = options_page(lnum)
+  print('-',pOptions['p1'][0])
+  perpage(diy_dict,lnum, pOptions)
   print(diy_dict)
   #printListOptions(p2[0])
   #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
