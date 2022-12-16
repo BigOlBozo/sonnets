@@ -3,6 +3,8 @@ import keyboard
 from bs4 import BeautifulSoup as BS
 import os
 from pronouncing import rhymes
+import random
+import time
 #os.system('cls')
 extensions = []
 links = []
@@ -462,20 +464,20 @@ def print_options(last_word, lnum, id_options):
     options[x+1] = line_matches[x]
   return options, id_options
   #for generating multiple pages
-def printListOptions(num, options):
+def printListOptions(num, options, lnum):
+  print(f'Line {lnum}:')
   print(f'Page {num.split("p")[1]}:')
   #pOptions = options_page(lnum)
-  print(options)
+  #print(options)
   for key in options:
-    #try:  1 : (098.l1), 2: 076.l1
+    try: 
     #poems[extid][lnum]['lineTxt/wdRhymes']
-    print(key,poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
-    '''except:
-      print(key)
-      pass'''
+      print(key,poems[options[key].split('.')[0]][options[key].split('.')[1]]['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
+    except:
+      pass
   print('Back/Next')
-def options_page(lnum):
-  id_options = ids
+def options_page(lnum, id_options):
+  id_options = id_options.copy()
   p1 = print_options('',f'l{lnum}',id_options)
   p2 = print_options('',f'l{lnum}',p1[1])
   p3 = print_options('',f'l{lnum}',p2[1])
@@ -510,43 +512,52 @@ def options_page(lnum):
   'p15' : p15,
   'p16' : p16
   }
-  print('pages', pages)
+  #print('pages', pages)
   return pages
-def choosing(pOptions, choice, diy_dict, pnum):
+def choosing(pOptions, choice, diy_dict, pnum, lnum):
   selection = (pOptions[pnum][0])[int(choice)]
   print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
-  diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
-  diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
+  diy_dict[f'diyl{lnum}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
+  diy_dict[f'diyl{lnum}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
 
 def selorpage(pOptions, diy_dict, pnum, lnum):
+  #time.sleep(1)
+  os.system('clear')
+  
+  if lnum > 14:
+    for key in diy_dict:
+      try:
+        print(diy_dict[key]['lineTxt'])
+      except:
+        print('error')
+    input()
+        #print((diy_dict))
+    
   #pOptions = options_page(lnum)
-  printListOptions(pnum, pOptions[pnum][0])
+  printListOptions(pnum, pOptions[pnum][0], lnum)
   choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
-    print('-------',type(lnum))
-
-    choosing(pOptions, choice, diy_dict,pnum)
+    choosing(pOptions, choice, diy_dict,pnum, lnum)
     lnum = int(lnum) + 1
-    print('-------',type(lnum))
-
-    print(options_page(lnum))
-    #pOptions = options_page(lnum)
+    pOptions = options_page(lnum,ids) #redefine options for next line
     perpage(diy_dict,lnum, pOptions)
   if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
     pnum = f'p{(int(pnum.split("p")[1])+1)}'
+    
     selorpage(pOptions, diy_dict,pnum, lnum)
   if choice.lower() == 'back' or choice.lower() == 'b' and pnum != 'p1':
     pnum = f'p{int(pnum.split("p")[1])-1}'
     selorpage(pOptions, diy_dict,pnum,lnum)
-
+  else:
+    print('choice invalid')
+    selorpage(pOptions, diy_dict, pnum, lnum)
 def perpage(diy_dict,lnum, pOptions):
-  print('----',lnum)
   pnum = 'p1'
   selorpage(pOptions, diy_dict, pnum,lnum)
 def build_your_own():
   diy_dict = create_diy_dict()
-  lnum = 2
-  pOptions = options_page(lnum)
+  lnum = 1
+  pOptions = options_page(lnum, ids)
   perpage(diy_dict,lnum, pOptions)
   #print(diy_dict)
   #printListOptions(p2[0])
