@@ -341,6 +341,12 @@ def remove_punctuation(extid, lnum, lword):
     if char.isalnum():
       lne += char
   return lne
+def remove_punctuation_2(word):
+  lne = ''
+  for char in word:
+    if char.isalnum():
+      lne += char
+  return lne
 
 def matching(blank):
   if blank == 'l1':
@@ -478,10 +484,10 @@ def printListOptions(num, options, lnum):
   print('Back/Next')
 def options_page(lnum, id_options, lastword):
   id_options = id_options.copy()
-  p1 = print_options('',f'l{lnum}',id_options)
-  p2 = print_options('',f'l{lnum}',p1[1])
-  p3 = print_options('',f'l{lnum}',p2[1])
-  p4 = print_options('',f'l{lnum}',p3[1])
+  p1 = print_options(lastword,f'l{lnum}',id_options)
+  p2 = print_options(lastword,f'l{lnum}',p1[1])
+  p3 = print_options(lastword,f'l{lnum}',p2[1])
+  p4 = print_options(lastword,f'l{lnum}',p3[1])
   p5 = print_options('',f'l{lnum}',p4[1])
   p6 = print_options('',f'l{lnum}',p5[1])
   p7 = print_options('',f'l{lnum}',p6[1])
@@ -532,12 +538,13 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
     input()
     
   printListOptions(pnum, pOptions[pnum][0], lnum)
-  choice = input('Pick One! \nSelection: ')
+  #choice = input('Pick One! \nSelection: ')
+  choice = '1'
   if choice.isnumeric():
     choosing(pOptions, choice, diy_dict,pnum, lnum)
     lnum = int(lnum) + 1
-    print(diy_dict[f'l{(int(lnum.split("l")[1])+1)]["lineTxt"].split(" ")[-1]}'])
-    pOptions = options_page(lnum,ids, '') #redefine options for next line
+    lword = remove_punctuation_2(diy_dict[f'diyl{(lnum-1)}']['lineTxt'].split(' ')[-1])
+    pOptions = options_page(lnum,ids, lword) #not -1, have to find match line #redefine options for next line
     perpage(diy_dict,lnum, pOptions)
   if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
     pnum = f'p{(int(pnum.split("p")[1])+1)}'
@@ -555,7 +562,7 @@ def perpage(diy_dict,lnum, pOptions):
 def build_your_own():
   diy_dict = create_diy_dict()
   lnum = 1
-  pOptions = options_page(lnum, ids)
+  pOptions = options_page(lnum, ids, '')
   perpage(diy_dict,lnum, pOptions)
   #print(diy_dict)
   #printListOptions(p2[0])
