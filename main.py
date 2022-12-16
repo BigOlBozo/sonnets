@@ -510,23 +510,27 @@ def options_page(lnum):
   'p15' : p15,
   'p16' : p16
   }
+  print('pages', pages)
   return pages
 def choosing(pOptions, choice, diy_dict, pnum):
-  print(pOptions)
   selection = (pOptions[pnum][0])[int(choice)]
   print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
   diy_dict[f'diyl{1}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
   diy_dict[f'diyl{1}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
 
 def selorpage(pOptions, diy_dict, pnum, lnum):
-  pOptions = options_page(lnum)
-  print('$$', pOptions[pnum][0])
+  #pOptions = options_page(lnum)
   printListOptions(pnum, pOptions[pnum][0])
   choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
+    print('-------',type(lnum))
+
     choosing(pOptions, choice, diy_dict,pnum)
     lnum = int(lnum) + 1
-    pOptions = options_page(lnum)
+    print('-------',type(lnum))
+
+    print(options_page(lnum))
+    #pOptions = options_page(lnum)
     perpage(diy_dict,lnum, pOptions)
   if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
     pnum = f'p{(int(pnum.split("p")[1])+1)}'
@@ -538,15 +542,13 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
 def perpage(diy_dict,lnum, pOptions):
   print('----',lnum)
   pnum = 'p1'
-  print('---', pOptions[pnum][0])
   selorpage(pOptions, diy_dict, pnum,lnum)
 def build_your_own():
   diy_dict = create_diy_dict()
-  lnum = 1
+  lnum = 2
   pOptions = options_page(lnum)
-  print('-',pOptions['p1'][0])
   perpage(diy_dict,lnum, pOptions)
-  print(diy_dict)
+  #print(diy_dict)
   #printListOptions(p2[0])
   #126 has no line 13/14: if len(poems[126][l13]['lineTxt'] == 0: id_options.remove(126))
   #print_options('ascent',f'l{1}', p1[1])
