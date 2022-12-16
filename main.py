@@ -476,7 +476,7 @@ def printListOptions(num, options, lnum):
     except:
       pass
   print('Back/Next')
-def options_page(lnum, id_options):
+def options_page(lnum, id_options, lastword):
   id_options = id_options.copy()
   p1 = print_options('',f'l{lnum}',id_options)
   p2 = print_options('',f'l{lnum}',p1[1])
@@ -512,7 +512,6 @@ def options_page(lnum, id_options):
   'p15' : p15,
   'p16' : p16
   }
-  #print('pages', pages)
   return pages
 def choosing(pOptions, choice, diy_dict, pnum, lnum):
   selection = (pOptions[pnum][0])[int(choice)]
@@ -531,15 +530,14 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
       except:
         print('error')
     input()
-        #print((diy_dict))
     
-  #pOptions = options_page(lnum)
   printListOptions(pnum, pOptions[pnum][0], lnum)
   choice = input('Pick One! \nSelection: ')
   if choice.isnumeric():
     choosing(pOptions, choice, diy_dict,pnum, lnum)
     lnum = int(lnum) + 1
-    pOptions = options_page(lnum,ids) #redefine options for next line
+    print(diy_dict[f'l{(int(lnum.split("l")[1])+1)]["lineTxt"].split(" ")[-1]}'])
+    pOptions = options_page(lnum,ids, '') #redefine options for next line
     perpage(diy_dict,lnum, pOptions)
   if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
     pnum = f'p{(int(pnum.split("p")[1])+1)}'
