@@ -516,14 +516,14 @@ def options_page(lnum, id_options):
   return pages
 def choosing(pOptions, choice, diy_dict, pnum, lnum):
   selection = (pOptions[pnum][0])[int(choice)]
-  print(poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
+  print('Line Selected!\nChoice: ', poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt'])
   diy_dict[f'diyl{lnum}']['lineTxt'] = poems[selection.split('.')[0]][selection.split('.')[1]]['lineTxt']
   diy_dict[f'diyl{lnum}']['wdRhymes'] = poems[selection.split('.')[0]][selection.split('.')[1]]['wdRhymes']
 
 def selorpage(pOptions, diy_dict, pnum, lnum):
-  #time.sleep(1)
-  os.system('clear')
-  
+  time.sleep(1)
+  #os.system('clear')
+  print()
   if lnum > 14:
     for key in diy_dict:
       try:
