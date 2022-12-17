@@ -581,7 +581,7 @@ def startuser():
     startuser()
     
 def startup():
-  os.system('cls')
+  #os.system('cls')
   for name in folders:
     newpath = name
     if not os.path.exists(newpath):
