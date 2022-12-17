@@ -1,13 +1,10 @@
 import requests
-import keyboard
 from bs4 import BeautifulSoup as BS
 import os
 from pronouncing import rhymes
 import random
-import time
-#os.system('cls')
 
-global rhymecount
+
 rhymecount = 0
 options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'b', 'n']
 extensions = []
@@ -16,25 +13,12 @@ ids = []
 syn = []
 errors = []
 poems = {}
+
 # fill = lists
 # write = txts
 # populate = dicts
-os.system('cls')
-'''if keyboard.is_pressed('x') == True:
-    exit()'''
 
 base = 'https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
-
-
-# folder path
-dir_path = r'C:\\Users\\merpd\\Desktop\\sonnets\\bakupsonnets'
-count = 0
-# Iterate directory
-for path in os.listdir(dir_path):
-    # check if current path is a file
-    if os.path.isfile(os.path.join(dir_path, path)):
-        count += 1
-print('File count:', count)
 
 
 def create_poem_dicts():
@@ -45,17 +29,14 @@ def create_poem_dicts():
     poems[f'{str(a).rjust(3,"0")}'] = lines
   print('Poem Dictionary Created')
 
-
 def clear_lines():
   for x in range(1, 16):
     with open(f'lines/{x}.txt', 'w'):
       pass
 
-
 def find_all_idx(main, sub):
   res = [i for i in range(len(main)) if main.startswith(sub, i)]
   return res
-
 
 def unicodetoascii(text):
   TEXT = (text.replace('\\xe2\\x80\\x99', "'").replace('\\xc3\\xa9', 'e').replace('\\xc3\\xa8', 'e').replace('⌜','@').replace('⌝','$').replace('\\xc2\\xa0', '').replace('\\xe2\\x8c\\x9c','').replace('\\xe2\\x8c\\x9d','').replace('\\xe2\\x80\\x90','-').replace('\\xe2\\x80\\x91', '-').replace('\\xe2\\x80\\x92','-').replace('\\xe2\\x80\\x93', '-').replace('\\xe2\\x80\\x94','-').replace('\\xe2\\x80\\x94', '-').replace('\\xe2\\x80\\x98',"'").replace('\\xe2\\x80\\x9b', "'").replace('\\xe2\\x80\\x9c','"').replace('\\xe2\\x80\\x9c', '"').replace('\\xe2\\x80\\x9d','"').replace('\\xe2\\x80\\x9e', '"').replace('\\xe2\\x80\\x9f','"').replace('\\xe2\\x80\\xa6', '...').replace('\\xe2\\x80\\xb2',"'").replace('\\xe2\\x80\\xb3', "'").replace('\\xe2\\x80\\xb4', "'").replace('\\xe2\\x80\\xb5', "'").replace('\\xe2\\x80\\xb6', "'").replace('\\xe2\\x80\\xb7', "'").replace('\\xe2\\x81\\xba', "+").replace('\\xe2\\x81\\xbb', "-").replace('\\xe2\\x81\\xbc',"=").replace('\\xe2\\x81\\xbd',"(").replace('\\xe2\\x81\\xbe', ")"))
@@ -67,7 +48,6 @@ def find_indices(list_to_check, item_to_find):
     if value == item_to_find:
       indices.append(idx)
   return indices
-
 
 def get_synopsis(extnum, extid):
   r = requests.get(f'{base+str(extnum)}')
@@ -85,7 +65,6 @@ def get_synopsis(extnum, extid):
     f.write(syntext)
   syn.clear()
 
-
 def write_ext():
   with open('extensions.txt', 'w'):
     pass
@@ -94,18 +73,15 @@ def write_ext():
       f.write(f'sonnet-{x}')
       f.write('\n')
 
-
 def fill_ext():
   with open('extensions.txt') as f:
     for ext in f:
       extensions.append(ext.strip('\n'))
 
-
 def fill_ids():
   with open('ids.txt') as f:
     for line in f:
       ids.append(line.strip('\n'))
-
 
 def write_txt_and_synopsi(extnum):
   r = requests.get(f'{base+str(extnum)}/')
@@ -121,11 +97,9 @@ def write_txt_and_synopsi(extnum):
       f.write(unicodetoascii(str(str(link))))
     links.append(link)
 
-
 def write_sonnets(length):
   for x in range(length):
     write_txt_and_synopsi(extensions[x])
-
 
 def clean_brid(extid):
   with open(f'sonnets/{extid}.txt') as f:
@@ -142,14 +116,12 @@ def clean_brid(extid):
       h.write(newline)
   return extid, len(find_all_idx(line, '<span'))
 
-
 def reset_texts():
   for id in ids:
     with open(f'bakupsonnets/{id}.txt') as f:
       for line in f:
         with open(f'sonnets/{id}.txt', 'w') as h:
           h.write(line)
-
 
 def clean(folder, extid):
   with open(f'{folder}/{extid}.txt') as f:
@@ -169,14 +141,12 @@ def clean(folder, extid):
   with open(f'{folder}/{extid}.txt', 'w') as f:
     f.write(lne)
 
-
 def clean_up(extid):
   for x in range(100):
     try:
       clean('sonnets', extid)
     except:
       break
-
 
 def cleaning():
   for id in ids:
@@ -189,7 +159,6 @@ def cleaning():
   nonumsing()
   print('No Nums')
 
-
 def nonums(extid):
   newline = ''
   with open(f'sonnets/{extid}.txt', 'r', encoding='utf-8') as f:
@@ -200,11 +169,9 @@ def nonums(extid):
   with open(f'sonnets/{extid}.txt', 'w') as h:
     h.write(newline.strip().strip('#'))
 
-
 def nonumsing():
   for id in ids:
     nonums(id)
-
 
 def print_sonnet(extid):
   print(f'\nSonnet {extid}:\n')
@@ -231,13 +198,11 @@ def print_sonnet(extid):
           print('  ', poems[extid][f'l{x}']['lineTxt'])
   return True
 
-
 def write_sonnets_bkup():
   reset_texts()
   print('Texts Reset')
   cleaning()
   print('Texts Clean')
-
 
 def write_lines():
   clear_lines()
@@ -245,12 +210,10 @@ def write_lines():
   filling_and_writing_lines()
   print('Lines Filled & Written')
 
-
 def fill_ext_ids():
   fill_ext()
   fill_ids()
   print('Extensions & Ids Filled')
-
 
 def clean_syn(folder, extid):
   x = 0
@@ -270,16 +233,13 @@ def clean_syn(folder, extid):
   with open(f'{folder}/{extid}syn.txt', 'w', encoding='utf-8') as f:
     f.write(lne)
 
-
 def clean_up_syn(extid):
   for x in range(10):
     clean_syn('synopsi', extid)
 
-
 def cleaning_syn():
   for id in ids:
     clean_up_syn(id)
-
 
 def reset_synopsi():
   for id in ids:
@@ -290,7 +250,6 @@ def reset_synopsi():
         break
   print('Synopsi Reset')
 
-
 def check_for_tags():
   for id in ids:
     with open(f'synopsi/{id}syn.txt', encoding="utf-8") as f:
@@ -298,17 +257,14 @@ def check_for_tags():
         if '<' in str(line):
           print('tag present in', id)
 
-
 def write_clean_synopsi():
   reset_synopsi()
   cleaning_syn()
-
 
 def print_synopsi(extid):
   with open(f'synopsi/{extid}syn.txt', encoding='utf-8') as f:
     for line in f:
       print(f'\nSynopsis:\n{line}')
-
 
 def lookup():
   request = input(
@@ -324,11 +280,9 @@ def lookup():
       print('\nSorry, that\'s not a valid input!')
       lookup()
     startuser()
-    #lookup()
 
-
-def filter_last_word(
-    lne):  #https://findwords.info/rhyme/crew?fuzzy=1 last resort
+def filter_last_word(lne):  
+  #https://findwords.info/rhyme/crew?fuzzy=1 last resort
   if lne[-3::] == 'ent':
     lne = 'accent'
   if lne[-3::] == 'est' and len(rhymes(lne)) == 0:
@@ -349,7 +303,6 @@ def filter_last_word(
     lne = lne
   return lne
 
-
 def rhymable_lines(extid):
   for lnum in poems[extid]:  #each line
     lne = ''
@@ -365,7 +318,6 @@ def rhymable_lines(extid):
           f.write('\n')
     poems[extid][lnum]['wdRhymes'] = rhymes(lne)
 
-
 def remove_punctuation(extid, lnum, lword):
   lne = ''
   for char in poems[extid][lnum]['lineTxt'].split()[-1]:
@@ -373,14 +325,12 @@ def remove_punctuation(extid, lnum, lword):
       lne += char
   return lne
 
-
 def remove_punctuation_2(word):
   lne = ''
   for char in word:
     if char.isalnum():
       lne += char
   return lne
-
 
 def matching(blank):
   if blank == 'l1':
@@ -413,7 +363,6 @@ def matching(blank):
     match = 'l13'
   return match
 
-
 def check_for_match(extid):
   if extid != '126':
     for lnum in poems[extid]:
@@ -426,11 +375,9 @@ def check_for_match(extid):
         if len(poems[extid][lnum]['wdRhymes']) == 0:
           print(f'{extid},{lnum},{lne}')
 
-
 def checking_for_matches():
   for id in ids:
     check_for_match(id)
-
 
 def fill_lines(extid):
   with open(f'sonnets/{extid}.txt', 'r') as f:
@@ -457,21 +404,18 @@ def fill_lines(extid):
           f.write('')
         f.write('\n')
 
-
 def filling_and_writing_lines():
-  global rhymecount
-  rhymecount += 1
   for id in ids:
     fill_lines(id)
 
-
 def fill_rhymes():
+  global rhymecount
+  rhymecount += 1
   with open('errors.txt', 'w'):
     pass
   for id in ids:
     rhymable_lines(id)
   print('Rhymes Found')
-
 
 def blanks():
   for id in ids:
@@ -479,14 +423,12 @@ def blanks():
       if poems[id][lnum]['wdRhymes'] == [] and lnum != 'l15':
         print(id, lnum)
 
-
 def create_diy_dict():
   lines = {}
   for x in range(1, 15):
     lines[f'diyl{x}'] = {'lineTxt': [], 'wdRhymes': []}
   diy_sonnet = lines
   return diy_sonnet
-
 
 def print_options(last_word, lnum, id_options):
   options = {}
@@ -512,20 +454,17 @@ def print_options(last_word, lnum, id_options):
   for x in range(len(line_matches)):
     options[x + 1] = line_matches[x]
   return options, id_options
-  #for generating multiple pages
-  
+ 
 def printListOptions(num, options, lnum):
   print(f'Line {lnum}:')
   print(f'Page {num.split("p")[1]}:')
   for key in options:
     try:
-      print(
-        key, poems[options[key].split('.')[0]][options[key].split('.')[1]]
-        ['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
+      print(key, poems[options[key].split('.')[0]][options[key].split('.')[1]]
+            ['lineTxt'], f"(Sonnet {options[key].split('.')[0]})")
     except:
       pass
   print('Back/Next')
-
 
 def options_page(lnum, id_options, lastword):
   id_options = id_options.copy()
@@ -565,7 +504,6 @@ def options_page(lnum, id_options, lastword):
   }
   return pages
 
-
 def choosing(pOptions, choice, diy_dict, pnum, lnum):
   selection = (pOptions[pnum][0])[int(choice)]
   print('Line Selected!\nChoice: ',
@@ -574,7 +512,6 @@ def choosing(pOptions, choice, diy_dict, pnum, lnum):
     selection.split('.')[1]]['lineTxt']
   diy_dict[f'diyl{lnum}']['wdRhymes'] = poems[selection.split('.')[0]][
     selection.split('.')[1]]['wdRhymes']
-
 
 def selorpage(pOptions, diy_dict, pnum, lnum):
   #time.sleep(1)
@@ -589,9 +526,9 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
     startuser()
   else:
     printListOptions(pnum, pOptions[pnum][0], lnum)
-    choice = input('Pick One! \nSelection: ')
+    #choice = input('Pick One! \nSelection: ')
     #choice = str(options[random.randint(0,11)])
-    #choice = '1'
+    choice = '1'
     if choice.isnumeric():
       choosing(pOptions, choice, diy_dict, pnum, lnum)
       lnum = int(lnum) + 1
@@ -617,18 +554,15 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
       print('choice invalid')
       selorpage(pOptions, diy_dict, pnum, lnum)
 
-
 def perpage(diy_dict, lnum, pOptions):
   pnum = 'p1'
   selorpage(pOptions, diy_dict, pnum, lnum)
-
 
 def build_your_own():
   diy_dict = create_diy_dict()
   lnum = 1
   pOptions = options_page(lnum, ids, '')
   perpage(diy_dict, lnum, pOptions)
-
 
 def startuser():
   user = input('\nSearch for a Sonnet or Build Your Own!\nSearch/Build:\nSelection: ')
@@ -641,14 +575,25 @@ def startuser():
       fill_rhymes()
     print('Build Your Own')
     build_your_own()
+  else:
+    print('Invalid Input')
+    startuser()
     
-
-
 def startup():
+  os.system('cls')
+  
   with open('extensions.txt','r') as f:
     if len(f.read()) == 0:
       write_ext()
-  q1 = input('Want to reset the sonnets and synopses?\nY/N\nSelection:')
+  
+  with open('ids.txt','r') as h:
+    if len(h.read()) == 0:
+      with open('ids.txt','a') as r:
+        for x in range(1,155):
+          r.write(f'{str(x).rjust(3,"0")}\n')
+        
+  #q1 = input('Want to reset the sonnets and synopses?\nY/N\nSelection:')
+  q1 = 'n'
   if q1.lower() == 'y':
     q1a = input('From backups or the site?\n1/2\nSelection:')
     if q1a == '1':
