@@ -12,6 +12,7 @@ links = []
 ids = []
 syn = []
 errors = []
+folders = ['lines','sonnets','synopsi']
 poems = {}
 
 # fill = lists
@@ -581,17 +582,18 @@ def startuser():
     
 def startup():
   os.system('cls')
-  
+  for name in folders:
+    newpath = name
+    if not os.path.exists(newpath):
+      os.makedirs(newpath)
   with open('extensions.txt','r') as f:
     if len(f.read()) == 0:
       write_ext()
-  
   with open('ids.txt','r') as h:
     if len(h.read()) == 0:
       with open('ids.txt','a') as r:
         for x in range(1,155):
-          r.write(f'{str(x).rjust(3,"0")}\n')
-        
+          r.write(f'{str(x).rjust(3,"0")}\n')      
   #q1 = input('Want to reset the sonnets and synopses?\nY/N\nSelection:')
   q1 = 'n'
   if q1.lower() == 'y':
