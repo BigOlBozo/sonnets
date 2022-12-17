@@ -269,7 +269,7 @@ def print_synopsi(extid):
 def lookup():
   request = input(
     '\nLooking for something?\nPick a number 1-154!\nNumber: ').rjust(3, '0')
-  if request.lower().strip('0') == 'x' or request.lower().strip('0') == 'exit':
+  if request.lower().strip('0') in ['x','exit','quit','stop','no','n']:
     print('Have a Good Day!')
     exit()
   else:
@@ -532,7 +532,7 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
     if choice.isnumeric():
       choosing(pOptions, choice, diy_dict, pnum, lnum)
       lnum = int(lnum) + 1
-      if lnum > 2 and lnum < 13 and lnum not in [5, 6, 9, 10]:
+      if lnum in [3,4,7,8,11,12]:
         lword = remove_punctuation_2(
           diy_dict[f'diyl{(lnum-2)}']['lineTxt'].split(' ')[-1])
       elif lnum == 14:
@@ -542,10 +542,10 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
         lword = ''
       pOptions = options_page(lnum, ids,lword)  #redefine options for next line
       perpage(diy_dict, lnum, pOptions)
-    if choice.lower() == 'next' or choice.lower() == 'n' and pnum != 'p16':
+    if choice.lower() in ['next','n'] and pnum != 'p16':
       pnum = f'p{(int(pnum.split("p")[1])+1)}'
       selorpage(pOptions, diy_dict, pnum, lnum)
-    if choice.lower() == 'back' or choice.lower() == 'b' and pnum != 'p1':
+    if choice.lower() in ['back','b'] and pnum != 'p1':
       pnum = f'p{int(pnum.split("p")[1])-1}'
       selorpage(pOptions, diy_dict, pnum, lnum)
     if choice.lower() == 'x':
@@ -567,10 +567,10 @@ def build_your_own():
 def startuser():
   user = input('\nSearch for a Sonnet or Build Your Own!\nSearch/Build:\nSelection: ')
   #os.system('cls')
-  if user.lower() == 'search':
+  if user.lower() in ['search','s','1']:
     print('Search:')
     lookup()
-  if user.lower() == 'build':
+  if user.lower() in ['build','b','2']:
     if rhymecount == 0:
       fill_rhymes()
     print('Build Your Own')
