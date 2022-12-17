@@ -26,6 +26,17 @@ os.system('cls')
 base = 'https://shakespeare.folger.edu/shakespeares-works/shakespeares-sonnets/'
 
 
+# folder path
+dir_path = r'C:\\Users\\merpd\\Desktop\\sonnets\\bakupsonnets'
+count = 0
+# Iterate directory
+for path in os.listdir(dir_path):
+    # check if current path is a file
+    if os.path.isfile(os.path.join(dir_path, path)):
+        count += 1
+print('File count:', count)
+
+
 def create_poem_dicts():
   for a in range(1, 155):
     lines = {}
@@ -600,6 +611,8 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
     if choice.lower() == 'back' or choice.lower() == 'b' and pnum != 'p1':
       pnum = f'p{int(pnum.split("p")[1])-1}'
       selorpage(pOptions, diy_dict, pnum, lnum)
+    if choice.lower() == 'x':
+      exit()
     else:
       print('choice invalid')
       selorpage(pOptions, diy_dict, pnum, lnum)
@@ -616,6 +629,7 @@ def build_your_own():
   pOptions = options_page(lnum, ids, '')
   perpage(diy_dict, lnum, pOptions)
 
+
 def startuser():
   user = input('\nSearch for a Sonnet or Build Your Own!\nSearch/Build:\nSelection: ')
   #os.system('cls')
@@ -628,18 +642,27 @@ def startuser():
     print('Build Your Own')
     build_your_own()
     
-    
-#write_ext()
-fill_ext_ids()  #need
-#write_sonnets() # from site
-#write_sonnets_bkup() #from bkup
-#write_clean_synopsi() #from bkup
-#check_for_tags()
-create_poem_dicts()  #need before printing lines/rhymes
-write_lines()  #need -> #also fills lines
-#print(rhymecount)
 
+
+def startup():
+  with open('extensions.txt','r') as f:
+    if len(f.read()) == 0:
+      write_ext()
+  q1 = input('Want to reset the sonnets and synopses?\nY/N\nSelection:')
+  if q1.lower() == 'y':
+    q1a = input('From backups or the site?\n1/2\nSelection:')
+    if q1a == '1':
+      write_sonnets_bkup()
+      write_clean_synopsi()
+    if q1a == '2':
+      q1aa = input('Are you sure? That will take a very long time.\nY/N\nSelection:')
+      if q1aa.lower() == 'y':
+        write_sonnets()
+  check_for_tags()
+  fill_ext_ids()
+  create_poem_dicts()
+  write_lines() #also fills lines
+        
+startup()
 startuser()
 
-#blanks()
-#lookup()
