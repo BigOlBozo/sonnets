@@ -578,9 +578,9 @@ def selorpage(pOptions, diy_dict, pnum, lnum):
     startuser()
   else:
     printListOptions(pnum, pOptions[pnum][0], lnum)
-    #choice = input('Pick One! \nSelection: ')
+    choice = input('Pick One! \nSelection: ')
     #choice = str(options[random.randint(0,11)])
-    choice = '1'
+    #choice = '1'
     if choice.isnumeric():
       choosing(pOptions, choice, diy_dict, pnum, lnum)
       lnum = int(lnum) + 1
@@ -616,7 +616,19 @@ def build_your_own():
   pOptions = options_page(lnum, ids, '')
   perpage(diy_dict, lnum, pOptions)
 
-
+def startuser():
+  user = input('\nSearch for a Sonnet or Build Your Own!\nSearch/Build:\nSelection: ')
+  #os.system('cls')
+  if user.lower() == 'search':
+    print('Search:')
+    lookup()
+  if user.lower() == 'build':
+    if rhymecount == 0:
+      fill_rhymes()
+    print('Build Your Own')
+    build_your_own()
+    
+    
 #write_ext()
 fill_ext_ids()  #need
 #write_sonnets() # from site
@@ -625,18 +637,8 @@ fill_ext_ids()  #need
 #check_for_tags()
 create_poem_dicts()  #need before printing lines/rhymes
 write_lines()  #need -> #also fills lines
-fill_rhymes()
-print(rhymecount)
-def startuser():
-  
-  user = input('\nSearch for a Sonnet or Build Your Own!\nSearch/Build:\nSelection: ')
-  os.system('clear')
-  if user.lower() == 'search':
-    print('Search:')
-    lookup()
-  if user.lower() == 'build':
-    print('Build Your Own')
-    build_your_own()
+#print(rhymecount)
+
 startuser()
 
 #blanks()
